@@ -2,28 +2,28 @@ defmodule Advent2018.Day1B do
   def first_duplicate(input) do
     input
     |> as_integers()
-    |> find_duplicate()
+    |> do_first_duplicate()
   end
 
-  defp find_duplicate(original_input) do
-    do_find_duplicate(original_input, 0, MapSet.new(), original_input)
+  defp do_first_duplicate(original_deltas) do
+    do_first_duplicate(original_deltas, 0, MapSet.new(), original_deltas)
   end
 
-  defp do_find_duplicate([next | rest], current_frequency, past_frequencies, original_input) do
+  defp do_first_duplicate([next | rest], current_frequency, past_frequencies, original_deltas) do
     if MapSet.member?(past_frequencies, current_frequency) do
       current_frequency
     else
-      do_find_duplicate(
+      do_first_duplicate(
         rest,
         current_frequency + next,
         MapSet.put(past_frequencies, current_frequency),
-        original_input
+        original_deltas
       )
     end
   end
 
-  defp do_find_duplicate([], current_frequency, past_frequencies, original_input) do
-    do_find_duplicate(original_input, current_frequency, past_frequencies, original_input)
+  defp do_first_duplicate([], current_frequency, past_frequencies, original_deltas) do
+    do_first_duplicate(original_deltas, current_frequency, past_frequencies, original_deltas)
   end
 
   defp as_integers(input) do
