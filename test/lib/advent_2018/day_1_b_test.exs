@@ -1,7 +1,7 @@
-defmodule Advent2018.Day1ATest do
+defmodule Advent2018.Day1BTest do
   use ExUnit.Case, async: true
 
-  alias Advent2018.Day1A
+  alias Advent2018.Day1B
 
   test "example 1" do
     input = """
@@ -11,40 +11,55 @@ defmodule Advent2018.Day1ATest do
     +1
     """
 
-    assert Day1A.calibrate(input) == 3
+    assert Day1B.first_duplicate(input) == 2
   end
 
   test "example 2" do
     input = """
     +1
-    +1
-    +1
+    -1
     """
 
-    assert Day1A.calibrate(input) == 3
+    assert Day1B.first_duplicate(input) == 0
   end
 
   test "example 3" do
     input = """
-    +1
-    +1
+    +3
+    +3
+    +4
     -2
+    -4
     """
 
-    assert Day1A.calibrate(input) == 0
+    assert Day1B.first_duplicate(input) == 10
   end
 
   test "example 4" do
     input = """
-    -1
-    -2
-    -3
+    -6
+    +3
+    +8
+    +5
+    -6
     """
 
-    assert Day1A.calibrate(input) == -6
+    assert Day1B.first_duplicate(input) == 5
   end
 
   test "example 5" do
+    input = """
+    +7
+    +7
+    -2
+    -7
+    -4
+    """
+
+    assert Day1B.first_duplicate(input) == 14
+  end
+
+  test "example 6" do
     input = """
     +9
     +1
@@ -1071,6 +1086,6 @@ defmodule Advent2018.Day1ATest do
     -83879
     """
 
-    assert Day1A.calibrate(input) == 590
+    assert Day1B.first_duplicate(input) == 83445
   end
 end
