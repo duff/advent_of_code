@@ -5,10 +5,10 @@ defmodule Advent2018.Day1ATest do
 
   test "example 1" do
     input = """
-    1
+    +1
     -2
-    3
-    1
+    +3
+    +1
     """
 
     assert Day1A.calibrate(input) == 3
@@ -16,9 +16,9 @@ defmodule Advent2018.Day1ATest do
 
   test "example 2" do
     input = """
-    1
-    1
-    1
+    +1
+    +1
+    +1
     """
 
     assert Day1A.calibrate(input) == 3
@@ -26,8 +26,8 @@ defmodule Advent2018.Day1ATest do
 
   test "example 3" do
     input = """
-    1
-    1
+    +1
+    +1
     -2
     """
 
