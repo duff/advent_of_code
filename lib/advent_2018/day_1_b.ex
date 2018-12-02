@@ -28,7 +28,7 @@ defmodule Advent2018.Day1B do
 
   defp as_integers(input) do
     input
-    |> String.split("\n", trim: true)
+    |> String.split()
     |> Enum.map(&String.to_integer(&1))
   end
 end
