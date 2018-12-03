@@ -30,8 +30,9 @@ defmodule Advent2018.Day2A do
   defp counts(box_id) do
     box_id
     |> String.graphemes()
-    |> Enum.group_by(& &1)
+    |> Enum.reduce(%{}, fn each, acc ->
+      Map.update(acc, each, 1, &(&1 + 1))
+    end)
     |> Map.values()
-    |> Enum.map(&Enum.count/1)
   end
 end
