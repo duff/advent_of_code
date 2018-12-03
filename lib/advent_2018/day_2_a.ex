@@ -15,22 +15,22 @@ defmodule Advent2018.Day2A do
     |> Enum.count(&three?(&1))
   end
 
-  def two?(input) do
-    input
+  def two?(box_id) do
+    box_id
     |> counts()
     |> Enum.member?(2)
   end
 
-  def three?(input) do
-    input
+  def three?(box_id) do
+    box_id
     |> counts()
     |> Enum.member?(3)
   end
 
-  defp counts(input) do
-    input
+  defp counts(box_id) do
+    box_id
     |> String.graphemes()
-    |> Enum.group_by(&(&1))
+    |> Enum.group_by(& &1)
     |> Map.values()
     |> Enum.map(&Enum.count/1)
   end
