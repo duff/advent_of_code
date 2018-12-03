@@ -7,15 +7,17 @@ defmodule Advent2018.Day3B do
   end
 
   defp find_pristine(list) do
-    {id, coordinates} = Enum.find(list, fn each ->
-      disjoint_with_all(each, list)
-    end)
+    {id, _coordinates} =
+      Enum.find(list, fn each ->
+        disjoint_with_all(each, list)
+      end)
+
     id
   end
 
   defp disjoint_with_all({id, coordinates}, list) do
     Enum.all?(list, fn {each_id, each_coordinates} ->
-      (id == each_id) || MapSet.disjoint?(MapSet.new(coordinates), MapSet.new(each_coordinates))
+      id == each_id || MapSet.disjoint?(coordinates, each_coordinates)
     end)
   end
 
@@ -24,7 +26,8 @@ defmodule Advent2018.Day3B do
 
     values =
       for x <- (left + 1)..(left + width),
-          y <- (top + 1)..(top + height) do
+          y <- (top + 1)..(top + height),
+          into: MapSet.new() do
         {x, y}
       end
 

@@ -3,10 +3,6 @@ defmodule Advent2018.Day3BTest do
 
   alias Advent2018.Day3B
 
-  test "coordinates" do
-    assert Day3B.coordinates("#3 @ 5,1: 2x3") == {3, [{6, 2}, {6,3}, {6,4}, {7,2}, {7,3}, {7,4}]}
-  end
-
   test "pristine" do
     input = """
     #1 @ 1,3: 4x4
