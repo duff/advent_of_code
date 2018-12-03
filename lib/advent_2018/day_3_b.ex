@@ -7,12 +7,8 @@ defmodule Advent2018.Day3B do
   end
 
   defp find_pristine(list) do
-    {id, _coordinates} =
-      Enum.find(list, fn each ->
-        disjoint_with_all(each, list)
-      end)
-
-    id
+    Enum.find(list, &(disjoint_with_all(&1, list)))
+    |> elem(0)
   end
 
   defp disjoint_with_all({id, coordinates}, list) do
