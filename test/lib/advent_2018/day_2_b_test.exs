@@ -9,7 +9,7 @@ defmodule Advent2018.Day2BTest do
     assert Day2B.difference_count("fghij", "fguij") == 1
   end
 
-  test "find_similar" do
+  test "find_similar_common_letters" do
     input = """
     abcde
     fghij
@@ -20,7 +20,7 @@ defmodule Advent2018.Day2BTest do
     wvxyz
     """
 
-    assert Day2B.find_similar(input) == ["fghij", "fguij"]
+    assert Day2B.find_similar_common_letters(input) == "fgij"
   end
 
   test "real input" do
@@ -277,11 +277,6 @@ defmodule Advent2018.Day2BTest do
     uqcipadzwtnhetcgvxgobmkfyr
     """
 
-    assert Day2B.find_similar(input) == ["uqcidadzwtnhesljvxyobmkfyr", "uqcidadzwtnhwsljvxyobmkfyr"]
-    assert Day2B.remove_differences("uqcidadzwtnhesljvxyobmkfyr", "uqcidadzwtnhwsljvxyobmkfyr") == "uqcidadzwtnhsljvxyobmkfyr"
-  end
-
-  test "remove_differences" do
-    assert Day2B.remove_differences("fghij", "fguij") == "fgij"
+    assert Day2B.find_similar_common_letters(input) == "uqcidadzwtnhsljvxyobmkfyr"
   end
 end
