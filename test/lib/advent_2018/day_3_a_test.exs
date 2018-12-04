@@ -17,7 +17,8 @@ defmodule Advent2018.Day3ATest do
     assert Day3A.double_booked(input) == 4
   end
 
-  test "real input" do
+  @tag :real_input
+  test "double_booked" do
     input = """
     #1 @ 265,241: 16x26
     #2 @ 584,382: 12x8

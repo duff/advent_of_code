@@ -23,6 +23,7 @@ defmodule Advent2018.Day2BTest do
     assert Day2B.find_similar_common_letters(input) == "fgij"
   end
 
+  @tag :real_input
   test "real input" do
     input = """
     uqcipadzntnheslgvjjozmkfyr

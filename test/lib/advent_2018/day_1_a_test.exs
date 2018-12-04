@@ -44,6 +44,7 @@ defmodule Advent2018.Day1ATest do
     assert Day1A.calibrate(input) == -6
   end
 
+  @tag :real_input
   test "example 5" do
     input = """
     +9

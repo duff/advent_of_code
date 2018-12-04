@@ -14,6 +14,7 @@ defmodule Advent2018.Day3BTest do
     assert Day3B.pristine(input) == 3
   end
 
+  @tag :real_input
   test "pristine with real value" do
     input = """
     #1 @ 265,241: 16x26

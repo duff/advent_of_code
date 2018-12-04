@@ -37,6 +37,7 @@ defmodule Advent2018.Day2ATest do
     assert Day2A.checksum(input) == 12
   end
 
+  @tag :real_input
   test "checksum real input" do
     input = """
     uqcipadzntnheslgvjjozmkfyr

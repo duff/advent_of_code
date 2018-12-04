@@ -59,6 +59,7 @@ defmodule Advent2018.Day1BTest do
     assert Day1B.first_duplicate(input) == 14
   end
 
+  @tag :real_input
   test "example 6" do
     input = """
     +9
