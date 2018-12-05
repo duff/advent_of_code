@@ -1,7 +1,7 @@
-defmodule Advent2018.Day4A do
+defmodule Advent2018.Day4 do
   defstruct guard: nil, sleep_start: nil, log: %{}
 
-  alias Advent2018.Day4A
+  alias Advent2018.Day4
 
   def sleepiest_guard_times_minute(input) do
     sleep_report = generate_sleep_report(input)
@@ -44,7 +44,7 @@ defmodule Advent2018.Day4A do
   defp generate_sleep_report(input) do
     input
     |> as_sorted_entries()
-    |> process_entries(%Day4A{})
+    |> process_entries(%Day4{})
   end
 
   defp process_entries([head | tail], state) do

@@ -1,7 +1,7 @@
-defmodule Advent2018.Day4ATest do
+defmodule Advent2018.Day4Test do
   use ExUnit.Case, async: true
 
-  alias Advent2018.Day4A
+  alias Advent2018.Day4
 
   test "sleepiest_guard_times_minute" do
     input = """
@@ -24,7 +24,7 @@ defmodule Advent2018.Day4ATest do
     [1518-11-05 00:55] wakes up
     """
 
-    assert Day4A.sleepiest_guard_times_minute(input) == 240
+    assert Day4.sleepiest_guard_times_minute(input) == 240
   end
 
   test "sleepiest_minute_times_guard" do
@@ -48,7 +48,7 @@ defmodule Advent2018.Day4ATest do
     [1518-11-05 00:55] wakes up
     """
 
-    assert Day4A.sleepiest_minute_times_guard(input) == 4455
+    assert Day4.sleepiest_minute_times_guard(input) == 4455
   end
 
   @tag :real_input
@@ -1166,7 +1166,7 @@ defmodule Advent2018.Day4ATest do
     [1518-04-07 00:59] wakes up
     """
 
-    assert Day4A.sleepiest_guard_times_minute(input) == 118599
+    assert Day4.sleepiest_guard_times_minute(input) == 118599
   end
 
   @tag :real_input
@@ -2284,6 +2284,6 @@ defmodule Advent2018.Day4ATest do
     [1518-04-07 00:59] wakes up
     """
 
-    assert Day4A.sleepiest_minute_times_guard(input) == 33949
+    assert Day4.sleepiest_minute_times_guard(input) == 33949
   end
 end
