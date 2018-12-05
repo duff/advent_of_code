@@ -5,33 +5,40 @@ defmodule Advent2018.Day4A do
 
   def sleepiest_guard_times_minute(input) do
     sleep_report = generate_sleep_report(input)
-    sleepy = narcoleptic(sleep_report)
-    minute = find_minute(sleep_report, sleepy)
-
-    String.to_integer(sleepy) * minute
-  end
-
-  def sleepiest_minute_times_guard(input) do
-    sleep_report = generate_sleep_report(input)
-
-    {guard_id, minute_map} =
-      sleep_report.log |> Enum.max_by(fn {_key, value} -> Map.values(value) |> Enum.max() end)
-
-    {minute, _} = minute_map |> Enum.max_by(fn {_key, value} -> value end)
+    guard_id = narcoleptic(sleep_report)
+    minute = find_minute(sleep_report, guard_id)
 
     String.to_integer(guard_id) * minute
   end
 
+  def sleepiest_minute_times_guard(input) do
+    sleep_report = generate_sleep_report(input)
+    {guard_id, minute_map} = guard_with_max_minute(sleep_report)
+
+    String.to_integer(guard_id) * max_minute(minute_map)
+  end
+
+  defp guard_with_max_minute(sleep_report) do
+    sleep_report.log
+    |> Enum.max_by(fn {_key, value} -> Map.values(value) |> Enum.max() end)
+  end
+
+  defp max_minute(minute_map) do
+    minute_map
+    |> Enum.max_by(fn {_key, value} -> value end)
+    |> elem(0)
+  end
+
   defp find_minute(sleep_report, sleepy) do
-    {minute, _} = sleep_report.log[sleepy] |> Enum.max_by(fn {_key, value} -> value end)
-    minute
+    sleep_report.log[sleepy]
+    |> Enum.max_by(fn {_key, value} -> value end)
+    |> elem(0)
   end
 
   defp narcoleptic(sleep_report) do
-    {guard_id, _} =
-      sleep_report.log |> Enum.max_by(fn {_key, value} -> Map.values(value) |> Enum.sum() end)
-
-    guard_id
+    sleep_report.log
+    |> Enum.max_by(fn {_key, value} -> Map.values(value) |> Enum.sum() end)
+    |> elem(0)
   end
 
   defp generate_sleep_report(input) do
