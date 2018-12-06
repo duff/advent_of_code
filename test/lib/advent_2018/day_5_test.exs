@@ -28,4 +28,10 @@ defmodule Advent2018.Day5Test do
     input = File.read!("test/lib/advent_2018/input/day5.txt") |> String.trim() |> String.to_charlist()
     assert Day5.num_units(input) == 9386
   end
+
+  @tag :real_input
+  test "shortest_length for real" do
+    input = File.read!("test/lib/advent_2018/input/day5.txt") |> String.trim()
+    assert Day5.shortest_length(input) == 4876
+  end
 end

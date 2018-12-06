@@ -1,8 +1,9 @@
 defmodule Advent2018.Day5 do
-  def num_units(charlist) do
-    {_, reacted} = react(charlist, {nil, []})
+  @case_diff ?a - ?A
 
-    reacted
+  def num_units(charlist) do
+    charlist
+    |> react()
     |> length
   end
 
@@ -12,41 +13,31 @@ defmodule Advent2018.Day5 do
     ?A..?Z
     |> Enum.map(fn char ->
       charlist
-      |> Enum.reject(&(&1 == char || &1 == char + 32))
+      |> Enum.reject(&(&1 == char || &1 == char + @case_diff))
       |> num_units()
     end)
     |> Enum.min()
   end
 
   def run_all_reactions(input) do
-    {_, reacted} = react(input)
-
-    reacted
+    input
+    |> String.to_charlist()
+    |> react()
     |> Enum.reverse()
     |> to_string()
   end
 
-  defp react(input) when is_binary(input) do
-    input
-    |> String.to_charlist()
-    |> react({nil, []})
+  defp react(charlist) do
+    charlist
+    |> Enum.reduce([], &react/2)
   end
 
-  defp react([head | tail], {previous_char, acc}) do
-    if reactive(head, previous_char) do
-      react(Enum.reverse(tl(acc)) ++ tail, {nil, []})
-    else
-      react(tail, {head, [head | acc]})
-    end
-  end
-
-  defp react([], acc) do
-    acc
-  end
+  defp react(char, [head | tail]) when (abs(char - head) == @case_diff), do: tail
+  defp react(char, acc), do: [char | acc]
 
   defp reactive(_, nil), do: false
 
   defp reactive(one, two) do
-    abs(one - two) == 32
+    abs(one - two) == @case_diff
   end
 end
