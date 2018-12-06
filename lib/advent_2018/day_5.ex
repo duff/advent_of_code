@@ -34,10 +34,4 @@ defmodule Advent2018.Day5 do
 
   defp react(char, [head | tail]) when (abs(char - head) == @case_diff), do: tail
   defp react(char, acc), do: [char | acc]
-
-  defp reactive(_, nil), do: false
-
-  defp reactive(one, two) do
-    abs(one - two) == @case_diff
-  end
 end
