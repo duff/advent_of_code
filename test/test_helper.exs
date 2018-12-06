@@ -1,4 +1,4 @@
-ExUnit.configure(exclude: [:real_input])
+ExUnit.configure(exclude: [:real])
 
 ExUnit.start()
 
