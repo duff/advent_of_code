@@ -41,7 +41,7 @@ defmodule Advent2018.Day6Test do
              MapSet.new([{1, 4}, {4, 3}, {3, 3}, {1, 3}, {2, 3}, {5, 3}, {5, 4}, {5, 5}, {1, 5}, {2, 5}, {3, 5}, {4, 5}])
   end
 
-  test "distances" do
+  test "min_distances" do
     input = """
     1, 1
     1, 6
@@ -51,12 +51,39 @@ defmodule Advent2018.Day6Test do
     8, 9
     """
 
-    distances = Day6.distances(input)
+    distances = Day6.min_distances(input)
     assert Map.get(distances, {1, 1}) == {{1, 1}, 0}
     assert Map.get(distances, {1, 2}) == {{1, 1}, 1}
     assert Map.get(distances, {1, 9}) == {{1, 6}, 3}
     assert Map.get(distances, {4, 4}) == {{3, 4}, 1}
     assert Map.get(distances, {5, 1}) == {nil, 4}
+  end
+
+  test "distance_sums" do
+    input = """
+    1, 1
+    1, 6
+    8, 3
+    3, 4
+    5, 5
+    8, 9
+    """
+
+    distance_sums = Day6.distance_sums(input)
+    assert Map.get(distance_sums, {4, 3}) == 30
+  end
+
+  test "desired_region_size" do
+    input = """
+    1, 1
+    1, 6
+    8, 3
+    3, 4
+    5, 5
+    8, 9
+    """
+
+    assert Day6.desired_region_size(input, 32) == 16
   end
 
   test "largest_finite_area" do
@@ -76,5 +103,11 @@ defmodule Advent2018.Day6Test do
   test "largest_finite_area for real" do
     input = File.read!("test/lib/advent_2018/input/day6.txt") |> String.trim()
     assert Day6.largest_finite_area(input) == 4011
+  end
+
+  @tag :real
+  test "desired_region_size real" do
+    input = File.read!("test/lib/advent_2018/input/day6.txt") |> String.trim()
+    assert Day6.desired_region_size(input, 10000) == 46054
   end
 end

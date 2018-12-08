@@ -1,6 +1,6 @@
 defmodule Advent2018.Day6 do
   def largest_finite_area(input) do
-    distances = distances(input)
+    distances = min_distances(input)
     infinite_coordinates = infinite_coordinates(distances, input)
 
     Enum.group_by(distances, fn {_, {coordinate, _}} -> coordinate end)
@@ -37,7 +37,7 @@ defmodule Advent2018.Day6 do
     end)
   end
 
-  def distances(input) do
+  def min_distances(input) do
     coordinates = as_coordinates(input)
     positions = board(input)
 
@@ -50,6 +50,24 @@ defmodule Advent2018.Day6 do
         end)
       end)
     end)
+  end
+
+  def distance_sums(input) do
+    coordinates = as_coordinates(input)
+    positions = board(input)
+
+    Enum.reduce(coordinates, %{}, fn coordinate, acc ->
+      Enum.reduce(positions, acc, fn position, acc ->
+        new_distance = distance(position, coordinate)
+        Map.update(acc, position, new_distance, &(new_distance + &1))
+      end)
+    end)
+  end
+
+  def desired_region_size(input, max_distance) do
+    input
+    |> distance_sums()
+    |> Enum.count(fn { _, value } -> value < max_distance end)
   end
 
   defp infinite_coordinates(distances, input) do
