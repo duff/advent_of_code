@@ -1,10 +1,10 @@
-defmodule Advent2018.Day7 do
-  alias Advent2018.Day7
+defmodule Advent2018.Day7A do
+  alias Advent2018.Day7A
 
   defstruct instructions: nil, possible_steps: nil, requirements: nil, ready_steps: [], recipe: [], all_steps: nil
 
   def new_state do
-    %Day7{}
+    %Day7A{}
   end
 
   def order(input) do
@@ -17,7 +17,7 @@ defmodule Advent2018.Day7 do
     |> process()
   end
 
-  defp process(state = %Day7{ready_steps: [next_step_to_take | tail]}) do
+  defp process(state = %Day7A{ready_steps: [next_step_to_take | tail]}) do
     state
     |> Map.update!(:recipe, &[next_step_to_take | &1])
     |> Map.put(:ready_steps, tail)
@@ -25,7 +25,7 @@ defmodule Advent2018.Day7 do
     |> process()
   end
 
-  defp process(state = %Day7{ready_steps: []}) do
+  defp process(state = %Day7A{ready_steps: []}) do
     state.recipe
     |> Enum.reverse()
     |> to_string()
@@ -40,10 +40,6 @@ defmodule Advent2018.Day7 do
       end)
 
     make_ready(state, result)
-  end
-
-  defp all_requirements_met?(step, state) do
-    MapSet.subset?(MapSet.new(state.requirements[step]), MapSet.new(state.recipe))
   end
 
   defp ready_those_without_requirements(state) do

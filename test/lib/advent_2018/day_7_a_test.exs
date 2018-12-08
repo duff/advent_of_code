@@ -1,7 +1,7 @@
-defmodule Advent2018.Day7Test do
+defmodule Advent2018.Day7ATest do
   use ExUnit.Case, async: true
 
-  alias Advent2018.Day7
+  alias Advent2018.Day7A
 
   test "order" do
     input = """
@@ -14,12 +14,12 @@ defmodule Advent2018.Day7Test do
     Step F must be finished before step E can begin.
     """
 
-    assert Day7.order(input) == "CABDFE"
+    assert Day7A.order(input) == "CABDFE"
   end
 
   @tag :real
   test "order real" do
     input = File.read!("test/lib/advent_2018/input/day7.txt") |> String.trim()
-    assert Day7.order(input) == "CGKMUWXFAIHSYDNLJQTREOPZBV"
+    assert Day7A.order(input) == "CGKMUWXFAIHSYDNLJQTREOPZBV"
   end
 end
