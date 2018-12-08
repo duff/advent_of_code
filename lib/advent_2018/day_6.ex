@@ -1,4 +1,15 @@
 defmodule Advent2018.Day6 do
+  def largest_finite_area(input) do
+    distances = distances(input)
+    infinite_coordinates = infinite_coordinates(distances, input)
+
+    Enum.group_by(distances, fn {_, {coordinate, _}} -> coordinate end)
+    |> Enum.map(fn {coordinate, values} -> {coordinate, Enum.count(values)} end)
+    |> reject_infinite(infinite_coordinates)
+    |> Enum.max_by(fn {_, value} -> value end)
+    |> elem(1)
+  end
+
   def edges(input) do
     coordinates = as_coordinates(input)
 
@@ -17,6 +28,15 @@ defmodule Advent2018.Day6 do
     end
   end
 
+  def perimeter(input) do
+    {top, bottom, left, right} = edges(input)
+
+    board(input)
+    |> Enum.filter(fn {x, y} ->
+      x == right || x == left || y == top || y == bottom
+    end)
+  end
+
   def distances(input) do
     coordinates = as_coordinates(input)
     positions = board(input)
@@ -32,13 +52,19 @@ defmodule Advent2018.Day6 do
     end)
   end
 
-  def largest_finite_area(input) do
-    distances = distances(input)
+  defp infinite_coordinates(distances, input) do
+    perimeter = perimeter(input)
 
-    Enum.group_by(distances, fn {_, {coordinate, _}} -> coordinate end)
-    |> Enum.map(fn {coordinate, values} -> {coordinate, Enum.count(values)} end)
-    |> Enum.max_by(fn {_, value} -> value end)
-    |> elem(1)
+    Enum.filter(distances, fn {position, _} -> position in perimeter end)
+    |> Enum.map(fn {_, {coordinate, _}} -> coordinate end)
+    |> MapSet.new()
+    |> Enum.to_list()
+  end
+
+  defp reject_infinite(coordinate_areas, infinite_coordinates) do
+    Enum.reject(coordinate_areas, fn {coordinate, _} ->
+      coordinate in infinite_coordinates
+    end)
   end
 
   defp updated_value(same_distance, same_distance, _coordinate, _existing_coordinate) do
