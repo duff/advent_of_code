@@ -7,7 +7,7 @@ defmodule Advent2018.Day3B do
   end
 
   defp find_pristine(list) do
-    Enum.find(list, &(disjoint_with_all(&1, list)))
+    Enum.find(list, &disjoint_with_all(&1, list))
     |> elem(0)
   end
 

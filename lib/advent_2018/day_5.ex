@@ -32,6 +32,6 @@ defmodule Advent2018.Day5 do
     |> Enum.reduce([], &react/2)
   end
 
-  defp react(char, [head | tail]) when (abs(char - head) == @case_diff), do: tail
+  defp react(char, [head | tail]) when abs(char - head) == @case_diff, do: tail
   defp react(char, acc), do: [char | acc]
 end

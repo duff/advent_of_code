@@ -4,7 +4,7 @@ defmodule Advent2018.Day3ATest do
   alias Advent2018.Day3A
 
   test "coordinates" do
-    assert Day3A.coordinates("#3 @ 5,1: 2x3") == [{6, 2}, {6,3}, {6,4}, {7,2}, {7,3}, {7,4}]
+    assert Day3A.coordinates("#3 @ 5,1: 2x3") == [{6, 2}, {6, 3}, {6, 4}, {7, 2}, {7, 3}, {7, 4}]
   end
 
   test "difference_count" do
@@ -20,6 +20,6 @@ defmodule Advent2018.Day3ATest do
   @tag :real
   test "double_booked" do
     input = File.read!("test/lib/advent_2018/input/day3.txt") |> String.trim()
-    assert Day3A.double_booked(input) == 101781
+    assert Day3A.double_booked(input) == 101_781
   end
 end

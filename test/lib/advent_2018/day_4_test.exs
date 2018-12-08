@@ -54,7 +54,7 @@ defmodule Advent2018.Day4Test do
   @tag :real
   test "sleepiest_guard_times_minute real_deal" do
     input = File.read!("test/lib/advent_2018/input/day4.txt") |> String.trim()
-    assert Day4.sleepiest_guard_times_minute(input) == 118599
+    assert Day4.sleepiest_guard_times_minute(input) == 118_599
   end
 
   @tag :real

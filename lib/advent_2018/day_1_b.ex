@@ -5,6 +5,7 @@ defmodule Advent2018.Day1B do
     |> Stream.cycle()
     |> Enum.reduce_while({0, MapSet.new([0])}, fn each, {current_frequency, past_frequencies} ->
       new_frequency = current_frequency + each
+
       if new_frequency in past_frequencies do
         {:halt, new_frequency}
       else

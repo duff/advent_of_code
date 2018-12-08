@@ -4,13 +4,13 @@ defmodule Advent2018.Day2B do
     two = String.graphemes(string_two)
 
     Enum.zip(one, two)
-    |> Enum.count(fn({a, b}) -> a != b end)
+    |> Enum.count(fn {a, b} -> a != b end)
   end
 
   def find_similar_common_letters(input) do
     strings = input |> String.split()
 
-    Enum.reduce_while(strings, [], fn current_string , acc ->
+    Enum.reduce_while(strings, [], fn current_string, acc ->
       found = find_difference_of_one(strings, current_string)
 
       if found do
@@ -32,7 +32,7 @@ defmodule Advent2018.Day2B do
     two = String.graphemes(string_two)
     zipped = Enum.zip(one, two)
 
-    (for {a, a} <- zipped, do: a)
+    for({a, a} <- zipped, do: a)
     |> Enum.join()
   end
 end

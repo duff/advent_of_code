@@ -2,7 +2,7 @@ defmodule Advent2018.Day3A do
   def double_booked(input) do
     input
     |> String.split("\n", trim: true)
-    |> Enum.map(&(coordinates(&1)))
+    |> Enum.map(&coordinates(&1))
     |> List.flatten()
     |> Enum.reduce(%{}, fn each, acc ->
       Map.update(acc, each, 1, &(&1 + 1))
@@ -13,9 +13,8 @@ defmodule Advent2018.Day3A do
   def coordinates(string) do
     [left, top, width, height] = parse_claim(string)
 
-    for x <- (left+1)..(left+width),
-        y <- (top+1)..(top+height)
-    do
+    for x <- (left + 1)..(left + width),
+        y <- (top + 1)..(top + height) do
       {x, y}
     end
   end
