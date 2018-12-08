@@ -16,4 +16,10 @@ defmodule Advent2018.Day7Test do
 
     assert Day7.order(input) == "CABDFE"
   end
+
+  @tag :real
+  test "order real" do
+    input = File.read!("test/lib/advent_2018/input/day7.txt") |> String.trim()
+    assert Day7.order(input) == "CGKMUWXFAIHSYDNLJQTREOPZBV"
+  end
 end
