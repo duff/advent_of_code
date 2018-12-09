@@ -122,9 +122,10 @@ defmodule Advent2018.Day7B do
     result =
       Enum.reduce(completed, [], fn each_completed, acc ->
         next_potential_steps = state.possible_steps[each_completed] || []
+
         Enum.reduce(next_potential_steps, acc, fn each, acc ->
           if MapSet.subset?(MapSet.new(state.requirements[each]), MapSet.new(state.recipe)) do
-            [ each | acc ]
+            [each | acc]
           else
             acc
           end
