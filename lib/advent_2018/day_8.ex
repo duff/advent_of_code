@@ -8,7 +8,7 @@ defmodule Advent2018.Tree do
   end
 end
 
-defmodule Advent2018.Day8A do
+defmodule Advent2018.Day8 do
   alias Advent2018.Tree
 
   def metadata_sum(input) do
@@ -16,6 +16,12 @@ defmodule Advent2018.Day8A do
     |> tree
     |> retrieve_meta([])
     |> Enum.sum()
+  end
+
+  def root_node_value(input) do
+    input
+    |> tree
+    |> retrieve_value()
   end
 
   def tree(input) do
@@ -55,5 +61,22 @@ defmodule Advent2018.Day8A do
     Enum.reduce(children, acc, fn child, acc ->
       retrieve_meta(child, acc)
     end) ++ meta
+  end
+
+  defp retrieve_value(%Tree{meta: meta, children: []}) do
+    Enum.sum(meta)
+  end
+
+  defp retrieve_value(%Tree{meta: meta, children: children}) do
+    Enum.reduce(meta, 0, fn index, acc ->
+      value_at_index(children, index) + acc
+    end)
+  end
+
+  defp value_at_index(children, index) do
+    case Enum.at(children, index - 1) do
+      nil -> 0
+      child -> retrieve_value(child)
+    end
   end
 end
