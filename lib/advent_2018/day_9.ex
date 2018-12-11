@@ -3,7 +3,6 @@ defmodule Advent2018.Day9.Game do
             current_marble_index: 0,
             current_player: 1,
             player_count: nil,
-            seeking_marble_worth: nil,
             last_marble_index: nil,
             next_marble: 1,
             scores: %{}
