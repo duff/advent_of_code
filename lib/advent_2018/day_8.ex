@@ -1,7 +1,7 @@
-defmodule Advent2018.Tree do
+defmodule Advent2018.Day8.Tree do
   defstruct children: [], meta: []
 
-  alias Advent2018.Tree
+  alias Advent2018.Day8.Tree
 
   def new do
     %Tree{}
@@ -9,7 +9,7 @@ defmodule Advent2018.Tree do
 end
 
 defmodule Advent2018.Day8 do
-  alias Advent2018.Tree
+  alias Advent2018.Day8.Tree
 
   def metadata_sum(input) do
     input

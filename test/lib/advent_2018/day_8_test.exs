@@ -2,7 +2,7 @@ defmodule Advent2018.Day8Test do
   use ExUnit.Case, async: true
 
   alias Advent2018.Day8
-  alias Advent2018.Tree
+  alias Advent2018.Day8.Tree
 
   test "simple tree with no children" do
     input = "0 3 2 3 4"
