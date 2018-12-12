@@ -45,10 +45,6 @@ defmodule Advent2018.Day9 do
     %{game | marbles: marbles, current_marble_index: new_index}
   end
 
-  defp bonus_marble_index(%Game{current_marble_index: current}) when current >= 7 do
-    current - 7
-  end
-
   defp bonus_marble_index(%Game{current_marble_index: current}) do
     -(7 - current)
   end
