@@ -1,5 +1,5 @@
-defmodule Advent2018.Day7B do
-  alias Advent2018.Day7B
+defmodule Advent2018.Day07B do
+  alias Advent2018.Day07B
 
   defstruct instructions: nil,
             possible_steps: nil,
@@ -13,7 +13,7 @@ defmodule Advent2018.Day7B do
             time_delta: nil
 
   def new_state do
-    %Day7B{}
+    %Day07B{}
   end
 
   def duration(input, number_of_workers, time_delta) do
@@ -33,18 +33,18 @@ defmodule Advent2018.Day7B do
     |> update_time_delta(time_delta)
   end
 
-  defp process(state = %Day7B{ready_steps: [_ | _]}) do
+  defp process(state = %Day07B{ready_steps: [_ | _]}) do
     state
     |> queue_steps()
     |> work_on_in_progress_steps()
     |> process()
   end
 
-  defp process(state = %Day7B{ready_steps: [], in_progress_steps: []}) do
+  defp process(state = %Day07B{ready_steps: [], in_progress_steps: []}) do
     state.total_seconds
   end
 
-  defp process(state = %Day7B{ready_steps: []}) do
+  defp process(state = %Day07B{ready_steps: []}) do
     state
     |> work_on_in_progress_steps()
     |> process()

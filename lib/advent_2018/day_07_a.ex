@@ -1,10 +1,10 @@
-defmodule Advent2018.Day7A do
-  alias Advent2018.Day7A
+defmodule Advent2018.Day07A do
+  alias Advent2018.Day07A
 
   defstruct instructions: nil, possible_steps: nil, requirements: nil, ready_steps: [], recipe: [], all_steps: nil
 
   def new_state do
-    %Day7A{}
+    %Day07A{}
   end
 
   def order(input) do
@@ -17,7 +17,7 @@ defmodule Advent2018.Day7A do
     |> process()
   end
 
-  defp process(state = %Day7A{ready_steps: [next_step_to_take | tail]}) do
+  defp process(state = %Day07A{ready_steps: [next_step_to_take | tail]}) do
     state
     |> Map.update!(:recipe, &[next_step_to_take | &1])
     |> Map.put(:ready_steps, tail)
@@ -25,7 +25,7 @@ defmodule Advent2018.Day7A do
     |> process()
   end
 
-  defp process(state = %Day7A{ready_steps: []}) do
+  defp process(state = %Day07A{ready_steps: []}) do
     state.recipe
     |> Enum.reverse()
     |> to_string()

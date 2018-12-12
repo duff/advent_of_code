@@ -1,4 +1,4 @@
-defmodule Advent2018.Day9.Game do
+defmodule Advent2018.Day09.Game do
   defstruct marbles: [0],
             current_marble_index: 0,
             current_player: 1,
@@ -8,8 +8,8 @@ defmodule Advent2018.Day9.Game do
             scores: %{}
 end
 
-defmodule Advent2018.Day9 do
-  alias Advent2018.Day9.Game
+defmodule Advent2018.Day09 do
+  alias Advent2018.Day09.Game
 
   def score(player_count, last_marble_played) do
     initialize_game(player_count, last_marble_played)

@@ -1,7 +1,7 @@
-defmodule Advent2018.Day4Test do
+defmodule Advent2018.Day04Test do
   use ExUnit.Case, async: true
 
-  alias Advent2018.Day4
+  alias Advent2018.Day04
 
   test "sleepiest_guard_times_minute" do
     input = """
@@ -24,7 +24,7 @@ defmodule Advent2018.Day4Test do
     [1518-11-05 00:55] wakes up
     """
 
-    assert Day4.sleepiest_guard_times_minute(input) == 240
+    assert Day04.sleepiest_guard_times_minute(input) == 240
   end
 
   test "sleepiest_minute_times_guard" do
@@ -48,18 +48,18 @@ defmodule Advent2018.Day4Test do
     [1518-11-05 00:55] wakes up
     """
 
-    assert Day4.sleepiest_minute_times_guard(input) == 4455
+    assert Day04.sleepiest_minute_times_guard(input) == 4455
   end
 
   @tag :real
   test "sleepiest_guard_times_minute real_deal" do
     input = File.read!("test/lib/advent_2018/input/day4.txt") |> String.trim()
-    assert Day4.sleepiest_guard_times_minute(input) == 118_599
+    assert Day04.sleepiest_guard_times_minute(input) == 118_599
   end
 
   @tag :real
   test "sleepiest_minute_times_guard real_deal" do
     input = File.read!("test/lib/advent_2018/input/day4.txt") |> String.trim()
-    assert Day4.sleepiest_minute_times_guard(input) == 33949
+    assert Day04.sleepiest_minute_times_guard(input) == 33949
   end
 end

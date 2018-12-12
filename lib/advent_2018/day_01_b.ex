@@ -1,4 +1,4 @@
-defmodule Advent2018.Day1B do
+defmodule Advent2018.Day01B do
   def first_duplicate(input) do
     input
     |> as_integers()

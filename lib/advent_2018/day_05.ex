@@ -1,4 +1,4 @@
-defmodule Advent2018.Day5 do
+defmodule Advent2018.Day05 do
   @case_diff ?a - ?A
 
   def num_units(charlist) do

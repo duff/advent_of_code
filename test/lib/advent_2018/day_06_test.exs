@@ -1,7 +1,7 @@
-defmodule Advent2018.Day6Test do
+defmodule Advent2018.Day06Test do
   use ExUnit.Case, async: true
 
-  alias Advent2018.Day6
+  alias Advent2018.Day06
 
   test "edges" do
     input = """
@@ -13,7 +13,7 @@ defmodule Advent2018.Day6Test do
     8, 9
     """
 
-    assert Day6.edges(input) == {1, 9, 1, 8}
+    assert Day06.edges(input) == {1, 9, 1, 8}
   end
 
   test "board" do
@@ -25,7 +25,7 @@ defmodule Advent2018.Day6Test do
     5, 4
     """
 
-    assert Day6.board(input) == [{1, 3}, {1, 4}, {2, 3}, {2, 4}, {3, 3}, {3, 4}, {4, 3}, {4, 4}, {5, 3}, {5, 4}]
+    assert Day06.board(input) == [{1, 3}, {1, 4}, {2, 3}, {2, 4}, {3, 3}, {3, 4}, {4, 3}, {4, 4}, {5, 3}, {5, 4}]
   end
 
   test "perimeter" do
@@ -37,7 +37,7 @@ defmodule Advent2018.Day6Test do
     5, 4
     """
 
-    assert MapSet.new(Day6.perimeter(input)) ==
+    assert MapSet.new(Day06.perimeter(input)) ==
              MapSet.new([{1, 4}, {4, 3}, {3, 3}, {1, 3}, {2, 3}, {5, 3}, {5, 4}, {5, 5}, {1, 5}, {2, 5}, {3, 5}, {4, 5}])
   end
 
@@ -51,7 +51,7 @@ defmodule Advent2018.Day6Test do
     8, 9
     """
 
-    distances = Day6.min_distances(input)
+    distances = Day06.min_distances(input)
     assert Map.get(distances, {1, 1}) == {{1, 1}, 0}
     assert Map.get(distances, {1, 2}) == {{1, 1}, 1}
     assert Map.get(distances, {1, 9}) == {{1, 6}, 3}
@@ -69,7 +69,7 @@ defmodule Advent2018.Day6Test do
     8, 9
     """
 
-    distance_sums = Day6.distance_sums(input)
+    distance_sums = Day06.distance_sums(input)
     assert Map.get(distance_sums, {4, 3}) == 30
   end
 
@@ -83,7 +83,7 @@ defmodule Advent2018.Day6Test do
     8, 9
     """
 
-    assert Day6.desired_region_size(input, 32) == 16
+    assert Day06.desired_region_size(input, 32) == 16
   end
 
   test "largest_finite_area" do
@@ -96,18 +96,18 @@ defmodule Advent2018.Day6Test do
     8, 9
     """
 
-    assert Day6.largest_finite_area(input) == 17
+    assert Day06.largest_finite_area(input) == 17
   end
 
   @tag :real
   test "largest_finite_area for real" do
     input = File.read!("test/lib/advent_2018/input/day6.txt") |> String.trim()
-    assert Day6.largest_finite_area(input) == 4011
+    assert Day06.largest_finite_area(input) == 4011
   end
 
   @tag :real
   test "desired_region_size real" do
     input = File.read!("test/lib/advent_2018/input/day6.txt") |> String.trim()
-    assert Day6.desired_region_size(input, 10000) == 46054
+    assert Day06.desired_region_size(input, 10000) == 46054
   end
 end

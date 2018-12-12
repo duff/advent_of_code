@@ -1,7 +1,7 @@
-defmodule Advent2018.Day1ATest do
+defmodule Advent2018.Day01ATest do
   use ExUnit.Case, async: true
 
-  alias Advent2018.Day1A
+  alias Advent2018.Day01A
 
   test "example 1" do
     input = """
@@ -11,7 +11,7 @@ defmodule Advent2018.Day1ATest do
     +1
     """
 
-    assert Day1A.calibrate(input) == 3
+    assert Day01A.calibrate(input) == 3
   end
 
   test "example 2" do
@@ -21,7 +21,7 @@ defmodule Advent2018.Day1ATest do
     +1
     """
 
-    assert Day1A.calibrate(input) == 3
+    assert Day01A.calibrate(input) == 3
   end
 
   test "example 3" do
@@ -31,7 +31,7 @@ defmodule Advent2018.Day1ATest do
     -2
     """
 
-    assert Day1A.calibrate(input) == 0
+    assert Day01A.calibrate(input) == 0
   end
 
   test "example 4" do
@@ -41,12 +41,12 @@ defmodule Advent2018.Day1ATest do
     -3
     """
 
-    assert Day1A.calibrate(input) == -6
+    assert Day01A.calibrate(input) == -6
   end
 
   @tag :real
   test "example 5" do
     input = File.read!("test/lib/advent_2018/input/day1.txt") |> String.trim()
-    assert Day1A.calibrate(input) == 590
+    assert Day01A.calibrate(input) == 590
   end
 end

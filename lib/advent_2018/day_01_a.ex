@@ -1,4 +1,4 @@
-defmodule Advent2018.Day1A do
+defmodule Advent2018.Day01A do
   def calibrate(input) do
     input
     |> String.split()

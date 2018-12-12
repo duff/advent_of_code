@@ -1,4 +1,4 @@
-defmodule Advent2018.Day2B do
+defmodule Advent2018.Day02B do
   def difference_count(string_one, string_two) do
     one = String.graphemes(string_one)
     two = String.graphemes(string_two)

@@ -1,7 +1,7 @@
-defmodule Advent2018.Day3BTest do
+defmodule Advent2018.Day03BTest do
   use ExUnit.Case, async: true
 
-  alias Advent2018.Day3B
+  alias Advent2018.Day03B
 
   test "pristine" do
     input = """
@@ -11,12 +11,12 @@ defmodule Advent2018.Day3BTest do
     #4 @ 3,1: 4x4
     """
 
-    assert Day3B.pristine(input) == 3
+    assert Day03B.pristine(input) == 3
   end
 
   @tag :real
   test "pristine with real value" do
     input = File.read!("test/lib/advent_2018/input/day3.txt") |> String.trim()
-    assert Day3B.pristine(input) == 909
+    assert Day03B.pristine(input) == 909
   end
 end

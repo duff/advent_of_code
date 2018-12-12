@@ -1,4 +1,4 @@
-defmodule Advent2018.Day2A do
+defmodule Advent2018.Day02A do
   def checksum(input) do
     twos_count(input) * threes_count(input)
   end

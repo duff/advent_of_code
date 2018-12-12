@@ -1,4 +1,4 @@
-defmodule Advent2018.Day3A do
+defmodule Advent2018.Day03A do
   def double_booked(input) do
     input
     |> String.split("\n", trim: true)

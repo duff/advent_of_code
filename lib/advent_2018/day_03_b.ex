@@ -1,4 +1,4 @@
-defmodule Advent2018.Day3B do
+defmodule Advent2018.Day03B do
   def pristine(input) do
     input
     |> String.split("\n", trim: true)

@@ -1,4 +1,4 @@
-defmodule Advent2018.Day6 do
+defmodule Advent2018.Day06 do
   def largest_finite_area(input) do
     distances = min_distances(input)
     infinite_coordinates = infinite_coordinates(distances, input)
