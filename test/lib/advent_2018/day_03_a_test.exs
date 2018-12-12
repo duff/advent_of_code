@@ -19,7 +19,7 @@ defmodule Advent2018.Day03ATest do
 
   @tag :real
   test "double_booked" do
-    input = File.read!("test/lib/advent_2018/input/day3.txt") |> String.trim()
+    input = File.read!("test/lib/advent_2018/input/day_03.txt") |> String.trim()
     assert Day03A.double_booked(input) == 101_781
   end
 end

@@ -25,7 +25,7 @@ defmodule Advent2018.Day02BTest do
 
   @tag :real
   test "real input" do
-    input = File.read!("test/lib/advent_2018/input/day2.txt") |> String.trim()
+    input = File.read!("test/lib/advent_2018/input/day_02.txt") |> String.trim()
     assert Day02B.find_similar_common_letters(input) == "uqcidadzwtnhsljvxyobmkfyr"
   end
 end

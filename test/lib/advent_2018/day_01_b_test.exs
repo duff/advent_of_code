@@ -61,7 +61,7 @@ defmodule Advent2018.Day01BTest do
 
   @tag :real
   test "example 6" do
-    input = File.read!("test/lib/advent_2018/input/day1.txt") |> String.trim()
+    input = File.read!("test/lib/advent_2018/input/day_01.txt") |> String.trim()
     assert Day01B.first_duplicate(input) == 83445
   end
 end
