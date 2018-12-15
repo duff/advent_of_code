@@ -16,8 +16,14 @@ defmodule Advent2018.Day10 do
 
   def print_eventual_message(input) do
     positions = to_positions(input)
-    {positions, _} = smallest_sky(positions)
+    {positions, _, _} = smallest_sky(positions)
     draw(positions)
+  end
+
+  def seconds_to_wait_for_message(input) do
+    positions = to_positions(input)
+    {_, _, seconds} = smallest_sky(positions)
+    seconds
   end
 
   def to_positions(input) do
@@ -43,12 +49,12 @@ defmodule Advent2018.Day10 do
   end
 
   def smallest_sky(positions) do
-    Enum.reduce(1..50_000, [{positions, area(positions)}], fn _each, [{previous_positions, _} | _] = acc ->
+    Enum.reduce(1..11_000, [{positions, area(positions), 0}], fn each_second, [{previous_positions, _, _} | _] = acc ->
       next_positions = Enum.map(previous_positions, &move/1)
       next_area = area(next_positions)
-      [{next_positions, next_area} | acc]
+      [{next_positions, next_area, each_second} | acc]
     end)
-    |> Enum.min_by(fn {_, area} -> area end)
+    |> Enum.min_by(fn {_, area, _} -> area end)
   end
 
   def draw(positions) do
