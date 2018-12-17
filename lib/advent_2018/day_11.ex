@@ -11,21 +11,35 @@ defmodule Advent2018.Day11 do
     [{found, _}, _] =
       for y <- 1..(@grid_size - 3),
           x <- 1..(@grid_size - 3) do
-        grid_of_nine = {{x, y}, {x + 2, y + 2}}
-        [grid_of_nine, power_level_of_grid_of_nine(grid_of_nine, serial_number)]
+        grid = {{x, y}, {x + 2, y + 2}}
+        [grid, power_level_of_grid(grid, serial_number)]
       end
       |> Enum.max_by(fn [_, power_level] -> power_level end)
 
     found
   end
 
-  defp power_level_of_grid_of_nine({{top_left_x, top_left_y}, {bottom_right_x, bottom_right_y}}, serial_number) do
+  def largest_power_grid(serial_number) do
+    found =
+      for y <- 1..@grid_size,
+          x <- 1..@grid_size,
+          size <- 1..@grid_size,
+          x + size <= @grid_size,
+          y + size <= @grid_size do
+        grid = {{x, y}, {x + size, y + size}}
+        %{x: x, y: y, size: 1 + size, total_power: power_level_of_grid(grid, serial_number)}
+      end
+      |> Enum.max_by(fn each -> Map.get(each, :total_power) end)
+
+    {found.x, found.y, found.size}
+  end
+
+  defp power_level_of_grid({{top_left_x, top_left_y}, {bottom_right_x, bottom_right_y}}, serial_number) do
     for x <- top_left_x..bottom_right_x,
         y <- top_left_y..bottom_right_y do
       {x, y}
     end
-    |> Enum.map(&power_level(&1, serial_number))
-    |> Enum.sum()
+    |> Enum.reduce(0, fn each, acc -> acc + power_level(each, serial_number) end)
   end
 
   defp hundreds_digit(number) do

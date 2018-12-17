@@ -15,8 +15,18 @@ defmodule Advent2018.Day11Test do
     assert Day11.largest_power_grid_of_nine(42) == {21, 61}
   end
 
+  # test "largest_power_grid" do
+  #   assert Day11.largest_power_grid(18) == {90, 269, 16}
+  #   assert Day11.largest_power_grid(42) == {232, 251, 12}
+  # end
+
   @tag :real
   test "largest_power_grid_of_nine real" do
     assert Day11.largest_power_grid_of_nine(1309) == {20, 43}
   end
+
+  # @tag :real
+  # test "largest_power_grid real" do
+  #   assert Day11.largest_power_grid(1309) == {0, 0, 0}
+  # end
 end
