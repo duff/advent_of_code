@@ -1,39 +1,37 @@
 defmodule Advent2018.Day12 do
   def part_a(pots, generation_count, input) do
-    {pots, index_of_pot_zero} = generate(pots, generation_count, input)
+    {pots, padding_added_at_front} = generate(pots, generation_count, input)
 
-    Enum.zip(-index_of_pot_zero..(length(pots) - 1 + index_of_pot_zero), pots)
+    Enum.zip(-padding_added_at_front..length(pots), pots)
     |> Enum.filter(fn {_index, value} -> value == "#" end)
     |> Enum.map(&elem(&1, 0))
     |> Enum.sum()
   end
 
   def generate(pots, generation_count, input) do
-    generate(prepped_pots(pots), generation_count, 1000, notes(input))
+    generate(String.codepoints(pots), generation_count, 0, notes(input))
   end
 
-  def generate(pots, 0, index_of_pot_zero, _) do
-    {pots, index_of_pot_zero}
+  def generate(pots, 0, padding_added_at_front, _) do
+    {pots, padding_added_at_front}
   end
 
-  def generate(pots, generation_count, index_of_pot_zero, notes) do
-    next_gen =
-      pots
-      |> Enum.chunk_every(5, 1)
-      |> Enum.map(fn each ->
-        Map.get(notes, each, ".")
-      end)
-
-    generate(next_gen, generation_count - 1, index_of_pot_zero - 5, notes)
+  def generate(pots, generation_count, padding_added_at_front, notes) do
+    generate(next_gen(pots, notes), generation_count - 1, padding_added_at_front + 3, notes)
   end
 
-  defp prepped_pots(pots) do
-    initial_length = String.length(pots)
-
+  defp next_gen(pots, notes) do
     pots
-    |> String.pad_leading(initial_length + 1000, ".")
-    |> String.pad_trailing(initial_length + 2000, ".")
-    |> String.codepoints()
+    |> padded()
+    |> Enum.chunk_every(5, 1)
+    |> Enum.map(fn each ->
+      Map.get(notes, each, ".")
+    end)
+  end
+
+  defp padded(pots) do
+    empty_pots = [".", ".", ".", ".", "."]
+    empty_pots ++ pots ++ empty_pots
   end
 
   defp notes(input) do

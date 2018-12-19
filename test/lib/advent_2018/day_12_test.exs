@@ -96,6 +96,6 @@ defmodule Advent2018.Day12Test do
     ##.## => #
     """
 
-    assert Day12.part_a(pots, 20, input) == 0
+    assert Day12.part_a(pots, 20, input) == 2909
   end
 end
