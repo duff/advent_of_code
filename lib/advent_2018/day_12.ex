@@ -9,42 +9,31 @@ defmodule Advent2018.Day12 do
   end
 
   def generate(pots, generation_count, input) do
-    generate(String.codepoints(pots), generation_count, 0, notes(input))
+    generate(prepped_pots(pots), generation_count, 1000, notes(input))
   end
 
   def generate(pots, 0, index_of_pot_zero, _) do
     {pots, index_of_pot_zero}
   end
 
-  def generate([".", ".", "." | _rest] = pots, generation_count, index_of_pot_zero, notes) do
+  def generate(pots, generation_count, index_of_pot_zero, notes) do
     next_gen =
       pots
-      |> add_more_empty_pots_at_end()
       |> Enum.chunk_every(5, 1)
-      |> Enum.map(fn each -> Map.get(notes, each, ".") end)
+      |> Enum.map(fn each ->
+        Map.get(notes, each, ".")
+      end)
 
-    generate(next_gen, generation_count - 1, index_of_pot_zero - 2, notes)
+    generate(next_gen, generation_count - 1, index_of_pot_zero - 5, notes)
   end
 
-  def generate(["#" | _rest] = pots, generation_count, index_of_pot_zero, notes) do
-    generate([".", ".", "." | pots], generation_count, index_of_pot_zero + 3, notes)
-  end
+  defp prepped_pots(pots) do
+    initial_length = String.length(pots)
 
-  def generate([".", "#" | _rest] = pots, generation_count, index_of_pot_zero, notes) do
-    generate([".", "." | pots], generation_count, index_of_pot_zero + 2, notes)
-  end
-
-  def generate([".", ".", "#" | _rest] = pots, generation_count, index_of_pot_zero, notes) do
-    generate(["." | pots], generation_count, index_of_pot_zero + 1, notes)
-  end
-
-  def add_more_empty_pots_at_end(pots) do
-    case Enum.take(pots, -3) do
-      [".", ".", "."] -> pots
-      ["#", ".", "."] -> pots ++ ["."]
-      [_, "#", "."] -> pots ++ [".", "."]
-      [_, _, "#"] -> pots ++ [".", ".", "."]
-    end
+    pots
+    |> String.pad_leading(initial_length + 1000, ".")
+    |> String.pad_trailing(initial_length + 2000, ".")
+    |> String.codepoints()
   end
 
   defp notes(input) do

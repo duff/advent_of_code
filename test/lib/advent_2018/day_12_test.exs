@@ -21,16 +21,19 @@ defmodule Advent2018.Day12Test do
     ####. => #
     """
 
-    assert generate("#..#.#..##......###...###", 1, input) == ".#...#....#.....#..#..#..#.."
-    assert generate("#..#.#..##......###...###", 2, input) == ".##..##...##....#..#..#..##."
-    assert generate("#..#.#..##......###...###", 3, input) == "#.#...#..#.#....#..#..#...#.."
-    assert generate("#..#.#..##......###...###", 5, input) == "..#...##...#.#..#..#...#...#.."
-    assert generate("#..#.#..##......###...###", 20, input) == ".#....##....#####...#######....#.#..##."
+    assert generate("#..#.#..##......###...###", 1, input) == "#...#....#.....#..#..#..#"
+    assert generate("#..#.#..##......###...###", 2, input) == "##..##...##....#..#..#..##"
+    assert generate("#..#.#..##......###...###", 3, input) == "#.#...#..#.#....#..#..#...#"
+    assert generate("#..#.#..##......###...###", 5, input) == "#...##...#.#..#..#...#...#"
+    assert generate("#..#.#..##......###...###", 20, input) == "#....##....#####...#######....#.#..##"
   end
 
   def generate(pots, generation_count, input) do
     {pots, _} = Day12.generate(pots, generation_count, input)
+
     Enum.join(pots, "")
+    |> String.trim_trailing(".")
+    |> String.trim_leading(".")
   end
 
   test "part_a" do
