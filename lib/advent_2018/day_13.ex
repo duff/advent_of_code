@@ -1,5 +1,5 @@
 defmodule Advent2018.Day13.Railroad do
-  defstruct tracks: %{}, trains: %{}, bottom_x: 0, bottom_y: 0, ticks: 0
+  defstruct tracks: %{}, trains: %{}, bottom_x: 0, bottom_y: 0, ticks: 0, first_collision_at: nil
 end
 
 defmodule Advent2018.Day13.Train do
@@ -12,22 +12,76 @@ defmodule Advent2018.Day13 do
 
   def part_a(input) do
     initialize(input)
-    |> IO.inspect(label: "Initialized", limit: 10000)
     |> print()
     |> tick()
-    |> print()
-
-    # |> IO.inspect(label: "Initialized", limit: 10000)
   end
 
-  defp tick(railroad) do
+  defp tick(%Railroad{first_collision_at: nil} = railroad) do
     Enum.reduce(0..railroad.bottom_x, railroad, fn x, railroad ->
       Enum.reduce(0..railroad.bottom_y, railroad, fn y, railroad ->
-        # railroad
-        move_train(railroad, Map.get(railroad.trains, {x, y}))
+        move_train(railroad, {x, y})
       end)
     end)
     |> preprare_for_next_tick()
+    |> print()
+    |> tick()
+  end
+
+  defp tick(%Railroad{first_collision_at: position}) do
+    position
+  end
+
+  defp move_train(railroad, coordinates) do
+    case new_train_position(train_at(railroad, coordinates)) do
+      {:ok, new_position, train} ->
+        railroad
+        |> check_for_collision(new_position)
+        |> actually_move_train(new_position, train)
+
+      :no_train ->
+        railroad
+    end
+  end
+
+  defp check_for_collision(%Railroad{first_collision_at: nil} = railroad, new_position) do
+    if train_at(railroad, new_position) do
+      %{railroad | first_collision_at: new_position}
+    else
+      railroad
+    end
+  end
+
+  defp check_for_collision(railroad, _new_position) do
+    railroad
+  end
+
+  defp new_train_position(%Train{character: ">", x: x, y: y, moved_this_tick: false} = train) do
+    {:ok, {x + 1, y}, train}
+  end
+
+  defp new_train_position(%Train{character: "<", x: x, y: y, moved_this_tick: false} = train) do
+    {:ok, {x - 1, y}, train}
+  end
+
+  defp new_train_position(%Train{character: "v", x: x, y: y, moved_this_tick: false} = train) do
+    {:ok, {x, y + 1}, train}
+  end
+
+  defp new_train_position(%Train{character: "^", x: x, y: y, moved_this_tick: false} = train) do
+    {:ok, {x, y - 1}, train}
+  end
+
+  defp new_train_position(_) do
+    :no_train
+  end
+
+  defp actually_move_train(%Railroad{trains: trains} = railroad, {new_x, new_y}, %Train{x: old_x, y: old_y} = train) do
+    new_trains =
+      trains
+      |> Map.delete({old_x, old_y})
+      |> Map.put({new_x, new_y}, %Train{train | x: new_x, y: new_y, moved_this_tick: true})
+
+    %{railroad | trains: new_trains}
   end
 
   defp preprare_for_next_tick(%Railroad{trains: trains} = railroad) do
@@ -39,31 +93,12 @@ defmodule Advent2018.Day13 do
     %{railroad | trains: new_trains}
   end
 
-  defp move_train(%Railroad{trains: trains} = railroad, %Train{moved_this_tick: false, character: ">", x: x, y: y} = train) do
-    new_trains =
-      trains
-      |> Map.delete({x, y})
-      |> Map.put({x + 1, y}, %Train{train | x: x + 1, moved_this_tick: true})
+  # Next steps:
+  #   * Handle moving to an intersection.
+  #   * Handle moving to a curve.
 
-    %{railroad | trains: new_trains}
-  end
-
-  defp move_train(%Railroad{trains: trains} = railroad, %Train{moved_this_tick: false, character: "v", x: x, y: y} = train) do
-    new_trains =
-      trains
-      |> Map.delete({x, y})
-      |> Map.put({x, y + 1}, %Train{train | y: y + 1, moved_this_tick: true})
-
-    %{railroad | trains: new_trains}
-  end
-
-  # Next step: Handle moving to an intersection
-  # defp move_train(railroad, nil) do
-  #   railroad
-  # end
-
-  defp move_train(railroad, _) do
-    railroad
+  defp train_at(railroad, coordinates) do
+    Map.get(railroad.trains, coordinates)
   end
 
   defp put_track_and_train(railroad, coordinates, char) when char in [">", "<"] do
