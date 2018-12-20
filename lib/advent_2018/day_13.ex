@@ -12,7 +12,6 @@ defmodule Advent2018.Day13 do
 
   def part_a(input) do
     initialize(input)
-    |> print()
     |> tick()
   end
 
@@ -22,8 +21,7 @@ defmodule Advent2018.Day13 do
         move_train(railroad, {x, y})
       end)
     end)
-    |> preprare_for_next_tick()
-    |> print()
+    |> complete_tick()
     |> tick()
   end
 
@@ -75,30 +73,87 @@ defmodule Advent2018.Day13 do
     :no_train
   end
 
-  defp actually_move_train(%Railroad{trains: trains} = railroad, {new_x, new_y}, %Train{x: old_x, y: old_y} = train) do
+  defp actually_move_train(%Railroad{trains: trains} = railroad, new_coordinates, %Train{x: old_x, y: old_y} = train) do
     new_trains =
       trains
       |> Map.delete({old_x, old_y})
-      |> Map.put({new_x, new_y}, %Train{train | x: new_x, y: new_y, moved_this_tick: true})
+      |> Map.put(new_coordinates, move_and_turn(railroad, train, new_coordinates))
 
     %{railroad | trains: new_trains}
   end
 
-  defp preprare_for_next_tick(%Railroad{trains: trains} = railroad) do
+  defp move_and_turn(railroad, train, coordinates) do
+    train
+    |> move_to(coordinates)
+    |> turn(track_at(railroad, coordinates))
+  end
+
+  defp turn(%Train{next_direction: :straight} = train, "+") do
+    %Train{train | next_direction: :right}
+  end
+
+  defp turn(%Train{character: "v", next_direction: :left} = train, "+") do
+    %Train{train | character: ">", next_direction: :straight}
+  end
+
+  defp turn(%Train{character: ">", next_direction: :left} = train, "+") do
+    %Train{train | character: "^", next_direction: :straight}
+  end
+
+  defp turn(%Train{character: "<", next_direction: :left} = train, "+") do
+    %Train{train | character: "v", next_direction: :straight}
+  end
+
+  defp turn(%Train{character: "^", next_direction: :left} = train, "+") do
+    %Train{train | character: "<", next_direction: :straight}
+  end
+
+  defp turn(%Train{character: "v", next_direction: :right} = train, "+") do
+    %Train{train | character: "<", next_direction: :left}
+  end
+
+  defp turn(%Train{character: ">", next_direction: :right} = train, "+") do
+    %Train{train | character: "v", next_direction: :left}
+  end
+
+  defp turn(%Train{character: "<", next_direction: :right} = train, "+") do
+    %Train{train | character: "^", next_direction: :left}
+  end
+
+  defp turn(%Train{character: "^", next_direction: :right} = train, "+") do
+    %Train{train | character: ">", next_direction: :left}
+  end
+
+  defp turn(%Train{character: "v"} = train, "/"), do: %Train{train | character: "<"}
+  defp turn(%Train{character: "v"} = train, "\\"), do: %Train{train | character: ">"}
+  defp turn(%Train{character: ">"} = train, "\\"), do: %Train{train | character: "v"}
+  defp turn(%Train{character: ">"} = train, "/"), do: %Train{train | character: "^"}
+  defp turn(%Train{character: "^"} = train, "\\"), do: %Train{train | character: "<"}
+  defp turn(%Train{character: "^"} = train, "/"), do: %Train{train | character: ">"}
+  defp turn(%Train{character: "<"} = train, "\\"), do: %Train{train | character: "^"}
+  defp turn(%Train{character: "<"} = train, "/"), do: %Train{train | character: "v"}
+
+  defp turn(train, _), do: train
+
+  defp move_to(train, {new_x, new_y}) do
+    %Train{train | x: new_x, y: new_y, moved_this_tick: true}
+  end
+
+  defp complete_tick(%Railroad{trains: trains} = railroad) do
     new_trains =
       trains
       |> Enum.map(fn {coordinates, train} -> {coordinates, %Train{train | moved_this_tick: false}} end)
       |> Map.new()
 
-    %{railroad | trains: new_trains}
+    %{railroad | trains: new_trains, ticks: railroad.ticks + 1}
   end
-
-  # Next steps:
-  #   * Handle moving to an intersection.
-  #   * Handle moving to a curve.
 
   defp train_at(railroad, coordinates) do
     Map.get(railroad.trains, coordinates)
+  end
+
+  defp track_at(railroad, coordinates) do
+    Map.get(railroad.tracks, coordinates)
   end
 
   defp put_track_and_train(railroad, coordinates, char) when char in [">", "<"] do
