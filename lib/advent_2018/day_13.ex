@@ -3,7 +3,7 @@ defmodule Advent2018.Day13.Railroad do
 end
 
 defmodule Advent2018.Day13.Train do
-  defstruct x: nil, y: nil, character: nil, next_direction: :left
+  defstruct x: nil, y: nil, character: nil, next_direction: :left, moved_this_tick: false
 end
 
 defmodule Advent2018.Day13 do
@@ -16,32 +16,48 @@ defmodule Advent2018.Day13 do
     |> print()
     |> tick()
     |> print()
+
     # |> IO.inspect(label: "Initialized", limit: 10000)
   end
 
   defp tick(railroad) do
-    # for x <- 0..railroad.bottom_x,
-    #     y <- 0..railroad.bottom_y do
-    #   move_train(railroad, Map.get(railroad.trains, {x, y}))
-    # end
-
     Enum.reduce(0..railroad.bottom_x, railroad, fn x, railroad ->
       Enum.reduce(0..railroad.bottom_y, railroad, fn y, railroad ->
-        railroad
-        # move_train(railroad, Map.get(railroad.trains, {x, y}))
+        # railroad
+        move_train(railroad, Map.get(railroad.trains, {x, y}))
       end)
     end)
+    |> preprare_for_next_tick()
   end
 
-  defp move_train(%Railroad{trains: trains} = railroad, %Train{character: ">", x: x, y: y} = train) do
+  defp preprare_for_next_tick(%Railroad{trains: trains} = railroad) do
     new_trains =
       trains
-      |> Map.delete({x, y})
-      |> Map.put({x + 1, y}, %Train{train | x: x + 1})
+      |> Enum.map(fn {coordinates, train} -> {coordinates, %Train{train | moved_this_tick: false}} end)
+      |> Map.new()
 
     %{railroad | trains: new_trains}
   end
 
+  defp move_train(%Railroad{trains: trains} = railroad, %Train{moved_this_tick: false, character: ">", x: x, y: y} = train) do
+    new_trains =
+      trains
+      |> Map.delete({x, y})
+      |> Map.put({x + 1, y}, %Train{train | x: x + 1, moved_this_tick: true})
+
+    %{railroad | trains: new_trains}
+  end
+
+  defp move_train(%Railroad{trains: trains} = railroad, %Train{moved_this_tick: false, character: "v", x: x, y: y} = train) do
+    new_trains =
+      trains
+      |> Map.delete({x, y})
+      |> Map.put({x, y + 1}, %Train{train | y: y + 1, moved_this_tick: true})
+
+    %{railroad | trains: new_trains}
+  end
+
+  # Next step: Handle moving to an intersection
   # defp move_train(railroad, nil) do
   #   railroad
   # end
