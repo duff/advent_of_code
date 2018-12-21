@@ -4,6 +4,50 @@ end
 
 defmodule Advent2018.Day13.Train do
   defstruct x: nil, y: nil, character: nil, next_direction: :left, moved_this_tick: false
+
+  alias Advent2018.Day13.Train
+
+  def new_position(%Train{character: ">", x: x, y: y, moved_this_tick: false} = train) do
+    {:ok, {x + 1, y}, train}
+  end
+
+  def new_position(%Train{character: "<", x: x, y: y, moved_this_tick: false} = train) do
+    {:ok, {x - 1, y}, train}
+  end
+
+  def new_position(%Train{character: "v", x: x, y: y, moved_this_tick: false} = train) do
+    {:ok, {x, y + 1}, train}
+  end
+
+  def new_position(%Train{character: "^", x: x, y: y, moved_this_tick: false} = train) do
+    {:ok, {x, y - 1}, train}
+  end
+
+  def new_position(_) do
+    :no_train
+  end
+
+  def turn(%Train{character: "v"} = train, "/"), do: %Train{train | character: "<"}
+  def turn(%Train{character: "v"} = train, "\\"), do: %Train{train | character: ">"}
+  def turn(%Train{character: ">"} = train, "\\"), do: %Train{train | character: "v"}
+  def turn(%Train{character: ">"} = train, "/"), do: %Train{train | character: "^"}
+  def turn(%Train{character: "^"} = train, "\\"), do: %Train{train | character: "<"}
+  def turn(%Train{character: "^"} = train, "/"), do: %Train{train | character: ">"}
+  def turn(%Train{character: "<"} = train, "\\"), do: %Train{train | character: "^"}
+  def turn(%Train{character: "<"} = train, "/"), do: %Train{train | character: "v"}
+
+  def turn(%Train{character: "v", next_direction: :left} = t, "+"), do: %Train{t | character: ">", next_direction: :straight}
+  def turn(%Train{character: ">", next_direction: :left} = t, "+"), do: %Train{t | character: "^", next_direction: :straight}
+  def turn(%Train{character: "<", next_direction: :left} = t, "+"), do: %Train{t | character: "v", next_direction: :straight}
+  def turn(%Train{character: "^", next_direction: :left} = t, "+"), do: %Train{t | character: "<", next_direction: :straight}
+  def turn(%Train{character: "v", next_direction: :right} = t, "+"), do: %Train{t | character: "<", next_direction: :left}
+  def turn(%Train{character: ">", next_direction: :right} = t, "+"), do: %Train{t | character: "v", next_direction: :left}
+  def turn(%Train{character: "<", next_direction: :right} = t, "+"), do: %Train{t | character: "^", next_direction: :left}
+  def turn(%Train{character: "^", next_direction: :right} = t, "+"), do: %Train{t | character: ">", next_direction: :left}
+
+  def turn(%Train{next_direction: :straight} = t, "+"), do: %Train{t | next_direction: :right}
+
+  def turn(train, _), do: train
 end
 
 defmodule Advent2018.Day13 do
@@ -30,7 +74,7 @@ defmodule Advent2018.Day13 do
   end
 
   defp move_train(railroad, coordinates) do
-    case new_train_position(train_at(railroad, coordinates)) do
+    case Train.new_position(train_at(railroad, coordinates)) do
       {:ok, new_position, train} ->
         railroad
         |> check_for_collision(new_position)
@@ -53,26 +97,6 @@ defmodule Advent2018.Day13 do
     railroad
   end
 
-  defp new_train_position(%Train{character: ">", x: x, y: y, moved_this_tick: false} = train) do
-    {:ok, {x + 1, y}, train}
-  end
-
-  defp new_train_position(%Train{character: "<", x: x, y: y, moved_this_tick: false} = train) do
-    {:ok, {x - 1, y}, train}
-  end
-
-  defp new_train_position(%Train{character: "v", x: x, y: y, moved_this_tick: false} = train) do
-    {:ok, {x, y + 1}, train}
-  end
-
-  defp new_train_position(%Train{character: "^", x: x, y: y, moved_this_tick: false} = train) do
-    {:ok, {x, y - 1}, train}
-  end
-
-  defp new_train_position(_) do
-    :no_train
-  end
-
   defp actually_move_train(%Railroad{trains: trains} = railroad, new_coordinates, %Train{x: old_x, y: old_y} = train) do
     new_trains =
       trains
@@ -85,55 +109,8 @@ defmodule Advent2018.Day13 do
   defp move_and_turn(railroad, train, coordinates) do
     train
     |> move_to(coordinates)
-    |> turn(track_at(railroad, coordinates))
+    |> Train.turn(track_at(railroad, coordinates))
   end
-
-  defp turn(%Train{next_direction: :straight} = train, "+") do
-    %Train{train | next_direction: :right}
-  end
-
-  defp turn(%Train{character: "v", next_direction: :left} = train, "+") do
-    %Train{train | character: ">", next_direction: :straight}
-  end
-
-  defp turn(%Train{character: ">", next_direction: :left} = train, "+") do
-    %Train{train | character: "^", next_direction: :straight}
-  end
-
-  defp turn(%Train{character: "<", next_direction: :left} = train, "+") do
-    %Train{train | character: "v", next_direction: :straight}
-  end
-
-  defp turn(%Train{character: "^", next_direction: :left} = train, "+") do
-    %Train{train | character: "<", next_direction: :straight}
-  end
-
-  defp turn(%Train{character: "v", next_direction: :right} = train, "+") do
-    %Train{train | character: "<", next_direction: :left}
-  end
-
-  defp turn(%Train{character: ">", next_direction: :right} = train, "+") do
-    %Train{train | character: "v", next_direction: :left}
-  end
-
-  defp turn(%Train{character: "<", next_direction: :right} = train, "+") do
-    %Train{train | character: "^", next_direction: :left}
-  end
-
-  defp turn(%Train{character: "^", next_direction: :right} = train, "+") do
-    %Train{train | character: ">", next_direction: :left}
-  end
-
-  defp turn(%Train{character: "v"} = train, "/"), do: %Train{train | character: "<"}
-  defp turn(%Train{character: "v"} = train, "\\"), do: %Train{train | character: ">"}
-  defp turn(%Train{character: ">"} = train, "\\"), do: %Train{train | character: "v"}
-  defp turn(%Train{character: ">"} = train, "/"), do: %Train{train | character: "^"}
-  defp turn(%Train{character: "^"} = train, "\\"), do: %Train{train | character: "<"}
-  defp turn(%Train{character: "^"} = train, "/"), do: %Train{train | character: ">"}
-  defp turn(%Train{character: "<"} = train, "\\"), do: %Train{train | character: "^"}
-  defp turn(%Train{character: "<"} = train, "/"), do: %Train{train | character: "v"}
-
-  defp turn(train, _), do: train
 
   defp move_to(train, {new_x, new_y}) do
     %Train{train | x: new_x, y: new_y, moved_this_tick: true}
