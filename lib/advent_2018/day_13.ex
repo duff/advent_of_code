@@ -1,5 +1,5 @@
 defmodule Advent2018.Day13.Railroad do
-  defstruct tracks: %{}, trains: %{}, bottom_x: 0, bottom_y: 0, ticks: 0, first_collision_at: nil
+  defstruct tracks: %{}, trains: %{}, bottom_x: 0, bottom_y: 0, ticks: 0, first_collision_at: nil, more_than_one_train: true
 end
 
 defmodule Advent2018.Day13.Train do
@@ -58,23 +58,49 @@ defmodule Advent2018.Day13 do
     input
     |> initialize
     |> tick_until_collision
+    |> collision_coordinates
+  end
+
+  def part_b(input) do
+    input
+    |> initialize
+    |> tick_until_one_train_remaining
+    |> last_train_coordinates
   end
 
   defp tick_until_collision(%Railroad{first_collision_at: nil} = railroad) do
     Enum.reduce(0..railroad.bottom_x, railroad, fn x, railroad ->
       Enum.reduce(0..railroad.bottom_y, railroad, fn y, railroad ->
-        move_train(railroad, {x, y})
+        move_train_for_collision_check(railroad, {x, y})
       end)
     end)
     |> complete_tick
     |> tick_until_collision
   end
 
-  defp tick_until_collision(%Railroad{first_collision_at: position}) do
-    position
+  defp tick_until_collision(railroad), do: railroad
+
+  defp tick_until_one_train_remaining(%Railroad{more_than_one_train: true} = railroad) do
+    Enum.reduce(0..railroad.bottom_x, railroad, fn x, railroad ->
+      Enum.reduce(0..railroad.bottom_y, railroad, fn y, railroad ->
+        move_train_exploding_collision(railroad, {x, y})
+      end)
+    end)
+    |> complete_tick
+    |> tick_until_one_train_remaining
   end
 
-  defp move_train(railroad, coordinates) do
+  defp tick_until_one_train_remaining(railroad), do: railroad
+
+  defp collision_coordinates(%Railroad{first_collision_at: position}), do: position
+
+  defp last_train_coordinates(%Railroad{trains: trains}) do
+    trains
+    |> Map.keys()
+    |> hd
+  end
+
+  defp move_train_for_collision_check(railroad, coordinates) do
     case Train.new_position(train_at(railroad, coordinates)) do
       {:ok, new_position, train} ->
         railroad
@@ -84,6 +110,29 @@ defmodule Advent2018.Day13 do
       :no_train ->
         railroad
     end
+  end
+
+  defp move_train_exploding_collision(%Railroad{trains: trains} = railroad, coordinates) do
+    case Train.new_position(train_at(railroad, coordinates)) do
+      {:ok, new_position, train} ->
+        if train_at(railroad, new_position) do
+          explode_trains(railroad, new_position, coordinates)
+        else
+          actually_move_train(railroad, new_position, train)
+        end
+
+      :no_train ->
+        railroad
+    end
+  end
+
+  defp explode_trains(%Railroad{trains: trains} = railroad, coordinates_one, coordinates_two) do
+    new_trains =
+      trains
+      |> Map.delete(coordinates_one)
+      |> Map.delete(coordinates_two)
+
+    %{railroad | trains: new_trains, more_than_one_train: Enum.count(new_trains) > 1}
   end
 
   defp check_for_collision(%Railroad{first_collision_at: nil} = railroad, new_position) do
