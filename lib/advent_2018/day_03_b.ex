@@ -3,7 +3,7 @@ defmodule Advent2018.Day03B do
     input
     |> String.split("\n", trim: true)
     |> Enum.map(&coordinates(&1))
-    |> find_pristine()
+    |> find_pristine
   end
 
   defp find_pristine(list) do

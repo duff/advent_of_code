@@ -43,7 +43,7 @@ defmodule Advent2018.Day04 do
 
   defp generate_sleep_report(input) do
     input
-    |> as_sorted_entries()
+    |> as_sorted_entries
     |> process_entries(%Day04{})
   end
 

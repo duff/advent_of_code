@@ -55,21 +55,22 @@ defmodule Advent2018.Day13 do
   alias Advent2018.Day13.Train
 
   def part_a(input) do
-    initialize(input)
-    |> tick()
+    input
+    |> initialize
+    |> tick_until_collision
   end
 
-  defp tick(%Railroad{first_collision_at: nil} = railroad) do
+  defp tick_until_collision(%Railroad{first_collision_at: nil} = railroad) do
     Enum.reduce(0..railroad.bottom_x, railroad, fn x, railroad ->
       Enum.reduce(0..railroad.bottom_y, railroad, fn y, railroad ->
         move_train(railroad, {x, y})
       end)
     end)
-    |> complete_tick()
-    |> tick()
+    |> complete_tick
+    |> tick_until_collision
   end
 
-  defp tick(%Railroad{first_collision_at: position}) do
+  defp tick_until_collision(%Railroad{first_collision_at: position}) do
     position
   end
 
@@ -180,7 +181,7 @@ defmodule Advent2018.Day13 do
     IO.puts("")
 
     railroad
-    |> display_string()
+    |> display_string
     |> IO.puts()
 
     IO.puts("")

@@ -13,8 +13,8 @@ defmodule Advent2018.Day09 do
 
   def score(player_count, last_marble_played) do
     initialize_game(player_count, last_marble_played)
-    |> play()
-    |> find_high_score()
+    |> play
+    |> find_high_score
   end
 
   defp play(%Game{next_marble: same, last_marble_index: same} = game) do
@@ -23,10 +23,10 @@ defmodule Advent2018.Day09 do
 
   defp play(game) do
     game
-    |> insert_next_marble()
-    |> increment_next_marble()
-    |> increment_current_player()
-    |> play()
+    |> insert_next_marble
+    |> increment_next_marble
+    |> increment_current_player
+    |> play
   end
 
   defp insert_next_marble(%Game{next_marble: next_marble} = game) when rem(next_marble, 23) == 0 do

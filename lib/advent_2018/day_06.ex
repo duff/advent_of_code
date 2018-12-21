@@ -66,7 +66,7 @@ defmodule Advent2018.Day06 do
 
   def desired_region_size(input, max_distance) do
     input
-    |> distance_sums()
+    |> distance_sums
     |> Enum.count(fn {_, value} -> value < max_distance end)
   end
 

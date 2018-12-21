@@ -10,11 +10,11 @@ defmodule Advent2018.Day07A do
   def order(input) do
     input
     |> instructions(new_state())
-    |> possible_steps()
-    |> requirements()
-    |> all_steps()
-    |> ready_those_without_requirements()
-    |> process()
+    |> possible_steps
+    |> requirements
+    |> all_steps
+    |> ready_those_without_requirements
+    |> process
   end
 
   defp process(state = %Day07A{ready_steps: [next_step_to_take | tail]}) do
@@ -22,13 +22,13 @@ defmodule Advent2018.Day07A do
     |> Map.update!(:recipe, &[next_step_to_take | &1])
     |> Map.put(:ready_steps, tail)
     |> add_more_ready_steps(next_step_to_take)
-    |> process()
+    |> process
   end
 
   defp process(state = %Day07A{ready_steps: []}) do
     state.recipe
     |> Enum.reverse()
-    |> to_string()
+    |> to_string
   end
 
   defp add_more_ready_steps(state, taken_step) do

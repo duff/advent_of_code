@@ -14,14 +14,14 @@ defmodule Advent2018.Day12 do
 
   def part_a(pots, generation_count, input_notes) do
     initialize(pots, input_notes, generation_count)
-    |> generate()
-    |> pot_sum()
+    |> generate
+    |> pot_sum
   end
 
   def part_b(pots, input_notes) do
     initialize(pots, input_notes, 50_000_000_000)
-    |> generate_until_same_delta()
-    |> pot_sum_using_same_delta()
+    |> generate_until_same_delta
+    |> pot_sum_using_same_delta
   end
 
   def generate(%PotData{remaining_generations: 0} = data) do
@@ -30,8 +30,8 @@ defmodule Advent2018.Day12 do
 
   def generate(data) do
     data
-    |> next_generation()
-    |> generate()
+    |> next_generation
+    |> generate
   end
 
   def generate_until_same_delta(data) do
@@ -44,7 +44,7 @@ defmodule Advent2018.Day12 do
       data
     else
       %PotData{new_data | previous_delta: new_delta, previous_sum: new_sum}
-      |> generate_until_same_delta()
+      |> generate_until_same_delta
     end
   end
 
@@ -67,16 +67,16 @@ defmodule Advent2018.Day12 do
   defp next_generation(%PotData{pots: pots, notes: notes} = data) do
     new_pots =
       pots
-      |> padded()
+      |> padded
       |> Enum.chunk_every(5, 1)
       |> Enum.map(fn each ->
         Map.get(notes, each, ".")
       end)
 
     %PotData{data | pots: new_pots}
-    |> decrement_remaining_generations()
-    |> increment_generations_processed()
-    |> increment_padding_count()
+    |> decrement_remaining_generations
+    |> increment_generations_processed
+    |> increment_padding_count
   end
 
   defp pot_sum(%PotData{pots: pots, padding_added_at_front: padding}) do

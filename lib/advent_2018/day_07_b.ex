@@ -19,25 +19,25 @@ defmodule Advent2018.Day07B do
   def duration(input, number_of_workers, time_delta) do
     input
     |> initialize_state(number_of_workers, time_delta)
-    |> process()
+    |> process
   end
 
   defp initialize_state(input, number_of_workers, time_delta) do
     new_state()
     |> instructions(input)
-    |> possible_steps()
-    |> requirements()
-    |> all_steps()
-    |> ready_those_without_requirements()
+    |> possible_steps
+    |> requirements
+    |> all_steps
+    |> ready_those_without_requirements
     |> init_worker_counts(number_of_workers)
     |> update_time_delta(time_delta)
   end
 
   defp process(state = %Day07B{ready_steps: [_ | _]}) do
     state
-    |> queue_steps()
-    |> work_on_in_progress_steps()
-    |> process()
+    |> queue_steps
+    |> work_on_in_progress_steps
+    |> process
   end
 
   defp process(state = %Day07B{ready_steps: [], in_progress_steps: []}) do
@@ -46,15 +46,15 @@ defmodule Advent2018.Day07B do
 
   defp process(state = %Day07B{ready_steps: []}) do
     state
-    |> work_on_in_progress_steps()
-    |> process()
+    |> work_on_in_progress_steps
+    |> process
   end
 
   defp work_on_in_progress_steps(state) do
     state
-    |> add_a_second()
-    |> decrement_each_in_progress()
-    |> handle_completed_steps()
+    |> add_a_second
+    |> decrement_each_in_progress
+    |> handle_completed_steps
   end
 
   defp handle_completed_steps(state) do

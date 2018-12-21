@@ -17,13 +17,13 @@ defmodule Advent2018.Day02A do
 
   def two?(box_id) do
     box_id
-    |> counts()
+    |> counts
     |> Enum.member?(2)
   end
 
   def three?(box_id) do
     box_id
-    |> counts()
+    |> counts
     |> Enum.member?(3)
   end
 

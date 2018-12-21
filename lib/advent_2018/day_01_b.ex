@@ -1,7 +1,7 @@
 defmodule Advent2018.Day01B do
   def first_duplicate(input) do
     input
-    |> as_integers()
+    |> as_integers
     |> Stream.cycle()
     |> Enum.reduce_while({0, MapSet.new([0])}, fn each, {current_frequency, past_frequencies} ->
       new_frequency = current_frequency + each

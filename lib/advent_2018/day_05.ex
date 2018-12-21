@@ -3,7 +3,7 @@ defmodule Advent2018.Day05 do
 
   def num_units(charlist) do
     charlist
-    |> react()
+    |> react
     |> length
   end
 
@@ -14,7 +14,7 @@ defmodule Advent2018.Day05 do
     |> Enum.map(fn char ->
       charlist
       |> Enum.reject(&(&1 == char || &1 == char + @case_diff))
-      |> num_units()
+      |> num_units
     end)
     |> Enum.min()
   end
@@ -22,9 +22,9 @@ defmodule Advent2018.Day05 do
   def run_all_reactions(input) do
     input
     |> String.to_charlist()
-    |> react()
+    |> react
     |> Enum.reverse()
-    |> to_string()
+    |> to_string
   end
 
   defp react(charlist) do

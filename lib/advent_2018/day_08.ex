@@ -21,7 +21,7 @@ defmodule Advent2018.Day08 do
   def root_node_value(input) do
     input
     |> tree
-    |> retrieve_value()
+    |> retrieve_value
   end
 
   def tree(input) do
@@ -29,7 +29,7 @@ defmodule Advent2018.Day08 do
       input
       |> String.split()
       |> Enum.map(&String.to_integer/1)
-      |> build_tree()
+      |> build_tree
 
     tree
   end

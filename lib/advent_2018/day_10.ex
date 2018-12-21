@@ -44,7 +44,7 @@ defmodule Advent2018.Day10 do
 
   def area(positions) do
     positions
-    |> bounding_rectangle()
+    |> bounding_rectangle
     |> Rectangle.area()
   end
 
