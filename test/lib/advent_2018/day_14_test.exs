@@ -11,10 +11,10 @@ defmodule Advent2018.Day14Test do
   end
 
   test "part_b" do
-    assert Day14.part_b([3, 7], "51589") == 9
-    assert Day14.part_b([3, 7], "01245") == 5
-    assert Day14.part_b([3, 7], "92510") == 18
-    assert Day14.part_b([3, 7], "59414") == 2018
+    assert Day14.part_b([3, 7], "515891") == 9
+    assert Day14.part_b([3, 7], "012451") == 5
+    assert Day14.part_b([3, 7], "925107") == 18
+    assert Day14.part_b([3, 7], "594142") == 2018
   end
 
   @tag :real
@@ -24,6 +24,6 @@ defmodule Advent2018.Day14Test do
 
   @tag :real
   test "part_b real" do
-    assert Day14.part_b([3, 7], "36102") == 1112
+    assert Day14.part_b([3, 7], "554401") == 20_211_326
   end
 end
