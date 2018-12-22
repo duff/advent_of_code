@@ -12,6 +12,6 @@ defmodule Advent2018.Day14Test do
 
   @tag :real
   test "part_a real" do
-    assert Day14.part_a([3, 7], 554_401) == "5941429882"
+    assert Day14.part_a([3, 7], 554_401) == "3610281143"
   end
 end
