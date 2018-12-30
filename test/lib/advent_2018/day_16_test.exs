@@ -33,9 +33,26 @@ defmodule Advent2018.Day16Test do
     assert Day16.opcode_count_for_sample(input) == 3
   end
 
+  test "opcodes_for_sample" do
+    input = [
+      "Before: [3, 2, 1, 1]",
+      "9 2 1 2",
+      "After:  [3, 2, 2, 1]"
+    ]
+
+    assert Day16.opcodes_for_sample(input) == {9, ~w[addi mulr seti]a}
+  end
+
   @tag :real
   test "part_a real" do
-    input = File.read!("test/lib/advent_2018/input/day_16.txt")
+    input = File.read!("test/lib/advent_2018/input/day_16_a.txt")
     assert Day16.part_a(input) == 544
+  end
+
+  @tag :real
+  test "part_b real" do
+    input_samples = File.read!("test/lib/advent_2018/input/day_16_a.txt")
+    input_program = File.read!("test/lib/advent_2018/input/day_16_b.txt")
+    assert Day16.part_b(input_samples, input_program) == 600
   end
 end
