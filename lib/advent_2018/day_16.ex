@@ -112,11 +112,7 @@ defmodule Advent2018.Day16 do
   end
 
   def execute(:gtir, [a, b, c], registers) do
-    if a > Enum.at(registers, b) do
-      set_value(registers, c, 1)
-    else
-      set_value(registers, c, 0)
-    end
+    set_boolean_value(registers, c, a > Enum.at(registers, b))
   end
 
   def execute(:setr, [a, _b, c], registers) do
@@ -128,47 +124,35 @@ defmodule Advent2018.Day16 do
   end
 
   def execute(:gtri, [a, b, c], registers) do
-    if Enum.at(registers, a) > b do
-      set_value(registers, c, 1)
-    else
-      set_value(registers, c, 0)
-    end
+    set_boolean_value(registers, c, Enum.at(registers, a) > b)
   end
 
   def execute(:gtrr, [a, b, c], registers) do
-    if Enum.at(registers, a) > Enum.at(registers, b) do
-      set_value(registers, c, 1)
-    else
-      set_value(registers, c, 0)
-    end
+    set_boolean_value(registers, c, Enum.at(registers, a) > Enum.at(registers, b))
   end
 
   def execute(:eqir, [a, b, c], registers) do
-    if a == Enum.at(registers, b) do
-      set_value(registers, c, 1)
-    else
-      set_value(registers, c, 0)
-    end
+    set_boolean_value(registers, c, a == Enum.at(registers, b))
   end
 
   def execute(:eqri, [a, b, c], registers) do
-    if Enum.at(registers, a) == b do
-      set_value(registers, c, 1)
-    else
-      set_value(registers, c, 0)
-    end
+    set_boolean_value(registers, c, Enum.at(registers, a) == b)
   end
 
   def execute(:eqrr, [a, b, c], registers) do
-    if Enum.at(registers, a) == Enum.at(registers, b) do
-      set_value(registers, c, 1)
-    else
-      set_value(registers, c, 0)
-    end
+    set_boolean_value(registers, c, Enum.at(registers, a) == Enum.at(registers, b))
   end
 
   defp set_value(registers, index, value) do
     List.replace_at(registers, index, value)
+  end
+
+  defp set_boolean_value(registers, index, condition) do
+    if condition do
+      set_value(registers, index, 1)
+    else
+      set_value(registers, index, 0)
+    end
   end
 
   defp parse([pre_register_line, instruction_line, post_register_line]) do
