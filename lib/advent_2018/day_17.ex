@@ -130,34 +130,22 @@ defmodule Advent2018.Day17 do
     MapSet.size(scan.water)
   end
 
-  defp print(scan) do
-    IO.puts("")
+  def print(scan) do
+    Enum.each(scan.min_y..scan.max_y, fn y ->
+      Enum.each(scan.min_x..scan.max_x, fn x ->
+        IO.write(cell(scan, x, y))
+      end)
 
-    scan
-    |> display_string
-    |> IO.puts()
-
-    IO.puts("")
-
-    scan
-  end
-
-  defp display_string(%Scan{min_y: min_y, max_y: max_y} = scan) do
-    Enum.reduce((min_y - 1)..max_y, [], fn y, rows ->
-      rows ++ [row_string(scan, y)]
+      IO.write("\n")
     end)
-    |> Enum.join("\n")
+
+    IO.write("\n")
+    scan
   end
 
-  defp row_string(%Scan{min_x: min_x, max_x: max_x} = scan, y) do
-    Enum.reduce(min_x..max_x, "", fn x, row ->
-      row <> display_character(scan, x, y)
-    end)
-  end
+  defp cell(_, 500, 0), do: "+"
 
-  defp display_character(_, 500, 0), do: "+"
-
-  defp display_character(%Scan{clay: clay, water: water}, x, y) do
+  defp cell(%Scan{clay: clay, water: water}, x, y) do
     cond do
       MapSet.member?(clay, {x, y}) -> "#"
       MapSet.member?(water, {x, y}) -> "~"
