@@ -6,7 +6,8 @@ defmodule Advent2018.Day17.Scan do
             min_y: nil,
             max_y: nil,
             hit_left_clay: false,
-            hit_right_clay: false
+            hit_right_clay: false,
+            iterations: 0
 end
 
 defmodule Advent2018.Day17 do
@@ -15,69 +16,83 @@ defmodule Advent2018.Day17 do
   def part_a(input) do
     %Scan{}
     |> initialize(input)
-    |> print
-    |> flow
+    # |> print
+    |> flow(500, 1)
     |> print
     |> water_count
   end
 
-  defp flow(scan) do
-    scan
-    |> add_water_vertically(500, 1)
-  end
-
-  defp add_water_vertically(%Scan{max_y: max_y} = scan, _x, max_y) do
+  defp flow(%Scan{iterations: 100_000} = scan, _x, _y) do
     scan
   end
 
-  defp add_water_vertically(%Scan{clay: clay, water: water} = scan, x, y) do
-    if MapSet.member?(clay, {x, y}) || MapSet.member?(water, {x, y}) do
-      # IO.inspect({x, y}, label: "HIT CLAY OR WATER")
+  defp flow(%Scan{max_y: max_y} = scan, _x, max_y) do
+    scan
+  end
 
-      scan =
+  defp flow(%Scan{clay: clay, water: water} = scan, x, y) do
+    cond do
+      MapSet.member?(clay, {x, y}) ->
         scan
-        |> add_water_left(x - 1, y - 1)
-        |> add_water_right(x + 1, y - 1)
+        |> add_water_left_and_right(x, y - 1)
 
-      if scan.hit_left_clay && scan.hit_right_clay do
+      MapSet.member?(water, {x, y}) ->
         scan
-        |> add_water_vertically(x, y - 1)
-      else
-        scan
-      end
-    else
-      %{scan | water: MapSet.put(water, {x, y})}
-      |> add_water_vertically(x, y + 1)
+        |> add_water_left_and_right(x, y)
+
+      true ->
+        %{scan | water: MapSet.put(water, {x, y}), iterations: scan.iterations + 1}
+        |> flow(x, y + 1)
     end
   end
 
   defp add_water_left(%Scan{clay: clay, water: water} = scan, x, y) do
     if MapSet.member?(clay, {x, y}) do
-      # IO.inspect({x, y}, label: "HIT CLAY LEFT")
-      %{scan | hit_left_clay: true}
+      %{scan | hit_left_clay: y}
     else
       if water_or_clay_below(scan, x, y) do
-        %{scan | water: MapSet.put(water, {x, y}), hit_left_clay: false}
-        |> add_water_left(x - 1, y)
+        if MapSet.member?(water, {x, y}) do
+          scan
+        else
+          %{scan | water: MapSet.put(water, {x, y}), hit_left_clay: false}
+          |> add_water_left(x - 1, y)
+        end
       else
         %{scan | water: MapSet.put(water, {x, y}), hit_left_clay: false}
-        |> add_water_vertically(x, y + 1)
+        |> flow(x, y + 1)
       end
     end
   end
 
   defp add_water_right(%Scan{clay: clay, water: water} = scan, x, y) do
     if MapSet.member?(clay, {x, y}) do
-      # IO.inspect({x, y}, label: "HIT CLAY RIGHT")
-      %{scan | hit_right_clay: true}
+      %{scan | hit_right_clay: y}
     else
       if water_or_clay_below(scan, x, y) do
-        %{scan | water: MapSet.put(water, {x, y}), hit_right_clay: false}
-        |> add_water_right(x + 1, y)
+        if MapSet.member?(water, {x, y}) do
+          scan
+        else
+          %{scan | water: MapSet.put(water, {x, y}), hit_right_clay: false}
+          |> add_water_right(x + 1, y)
+        end
       else
         %{scan | water: MapSet.put(water, {x, y}), hit_right_clay: false}
-        |> add_water_vertically(x, y + 1)
+        |> flow(x, y + 1)
       end
+    end
+  end
+
+  defp add_water_left_and_right(%Scan{} = scan, x, y) do
+    scan =
+      scan
+      |> add_water_left(x - 1, y)
+      |> add_water_right(x + 1, y)
+
+    if scan.hit_left_clay == y && scan.hit_right_clay == y do
+      scan
+      |> flow(x, y - 1)
+    else
+      scan
     end
   end
 
@@ -132,7 +147,7 @@ defmodule Advent2018.Day17 do
 
   def print(scan) do
     Enum.each(scan.min_y..scan.max_y, fn y ->
-      Enum.each(scan.min_x..scan.max_x, fn x ->
+      Enum.each((scan.min_x - 1)..(scan.max_x + 1), fn x ->
         IO.write(cell(scan, x, y))
       end)
 
