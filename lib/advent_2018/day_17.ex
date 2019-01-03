@@ -11,6 +11,9 @@ end
 defmodule Advent2018.Day17 do
   alias Advent2018.Day17.Scan
 
+  # @max_iterations 1750
+  @max_iterations 4_000_000
+
   def part_a(input) do
     %Scan{}
     |> initialize(input)
@@ -22,7 +25,7 @@ defmodule Advent2018.Day17 do
     |> water_count
   end
 
-  defp flow(%Scan{iterations: 9100} = scan, _x, _y) do
+  defp flow(%Scan{iterations: @max_iterations} = scan, _x, _y) do
     scan
   end
 
@@ -30,7 +33,7 @@ defmodule Advent2018.Day17 do
     scan
   end
 
-  defp flow(%Scan{water: water} = scan, x, y) do
+  defp flow(scan, x, y) do
     # print(scan)
     cond do
       clay_below?(scan, x, y) ->
@@ -40,14 +43,19 @@ defmodule Advent2018.Day17 do
       #   %{scan | water: MapSet.put(water, {x, y}), iterations: scan.iterations + 1}
       #   |> spread(x, y - 1)
 
-      # water?(scan, x, y) ->
-      #   # spread(scan, x, y - 1)
+      # water_below?(scan, x, y) ->
+      #   spread(scan, x, y - 1)
       #   scan
 
       true ->
-        %{scan | water: MapSet.put(water, {x, y}), iterations: scan.iterations + 1}
+        scan
+        |> add_water(x, y)
         |> flow(x, y + 1)
     end
+  end
+
+  defp spread(%Scan{iterations: @max_iterations} = scan, x, y) do
+    scan
   end
 
   defp spread(scan, x, y) do
@@ -77,9 +85,23 @@ defmodule Advent2018.Day17 do
           scan
           |> fill_from(x, right, y)
           |> fill_from(x, left, y)
-          |> flow(left, y + 1)
           |> flow(right, y + 1)
+          |> flow(left, y + 1)
       end
+    end
+  end
+
+  defp add_water(%Scan{iterations: @max_iterations} = scan, x, y) do
+    scan
+  end
+
+  defp add_water(%Scan{water: water} = scan, x, y) do
+    if clay?(scan, x, y) do
+      # raise "Can't add water to {#{x}, #{y}}. Clay is there."
+      IO.puts("Can't add water to {#{x}, #{y}}. Clay is there.")
+      %{scan | water: MapSet.put(water, {x, y}), iterations: scan.iterations + 1}
+    else
+      %{scan | water: MapSet.put(water, {x, y}), iterations: scan.iterations + 1}
     end
   end
 
@@ -94,15 +116,23 @@ defmodule Advent2018.Day17 do
   end
 
   defp first_dropoff_to_the_right(scan, x, y) do
-    Enum.find((x + 1)..scan.max_x, fn each ->
-      clay_below?(scan, each, y) && (open_space_below?(scan, each + 1, y) || water_below?(scan, each + 1, y))
-    end) + 1
+    if open_space_below?(scan, x + 1, y) do
+      x + 1
+    else
+      Enum.find((x + 1)..scan.max_x, fn each ->
+        clay_below?(scan, each, y) && (open_space_below?(scan, each + 1, y) || water_below?(scan, each + 1, y))
+      end) + 1
+    end
   end
 
   defp first_dropoff_to_the_left(scan, x, y) do
-    Enum.find((x - 1)..scan.min_x, fn each ->
-      clay_below?(scan, each, y) && (open_space_below?(scan, each - 1, y) || water_below?(scan, each - 1, y))
-    end) - 1
+    if open_space_below?(scan, x - 1, y) do
+      x - 1
+    else
+      Enum.find((x - 1)..scan.min_x, fn each ->
+        clay_below?(scan, each, y) && (open_space_below?(scan, each - 1, y) || water_below?(scan, each - 1, y))
+      end) - 1
+    end
   end
 
   defp fill_from_left_clay(scan, x, y) do
@@ -115,25 +145,19 @@ defmodule Advent2018.Day17 do
     fill_from(scan, from, x, y)
   end
 
-  defp fill_from(%Scan{water: water} = scan, from_x, to_x, y) do
-    new_water =
-      Enum.reduce(from_x..to_x, water, fn each, acc ->
-        MapSet.put(acc, {each, y})
-      end)
-
-    %{scan | water: new_water, iterations: scan.iterations + 1}
+  defp fill_from(scan, from_x, to_x, y) do
+    Enum.reduce(from_x..to_x, scan, fn each, acc ->
+      add_water(acc, each, y)
+    end)
   end
 
-  defp fill_row(%Scan{water: water} = scan, x, y) do
+  defp fill_row(scan, x, y) do
     from = first_clay_to_the_left(scan, x, y) + 1
     to = first_clay_to_the_right(scan, x, y) - 1
 
-    new_water =
-      Enum.reduce(from..to, water, fn each, acc ->
-        MapSet.put(acc, {each, y})
-      end)
-
-    %{scan | water: new_water, iterations: scan.iterations + 1}
+    Enum.reduce(from..to, scan, fn each, acc ->
+      add_water(acc, each, y)
+    end)
   end
 
   defp first_clay_to_the_left(scan, x, y) do
@@ -153,7 +177,7 @@ defmodule Advent2018.Day17 do
   end
 
   defp clay_wall_to_the_left?(scan, x, y) do
-    Enum.reduce_while((x - 1)..scan.min_x, false, fn each, acc ->
+    Enum.reduce_while((x - 1)..scan.min_x, false, fn each, _acc ->
       cond do
         open_space_below?(scan, each, y) ->
           {:halt, false}
@@ -168,7 +192,7 @@ defmodule Advent2018.Day17 do
   end
 
   defp clay_wall_to_the_right?(scan, x, y) do
-    Enum.reduce_while((x + 1)..scan.max_x, false, fn each, acc ->
+    Enum.reduce_while((x + 1)..scan.max_x, false, fn each, _acc ->
       cond do
         open_space_below?(scan, each, y) ->
           {:halt, false}
@@ -248,7 +272,7 @@ defmodule Advent2018.Day17 do
   end
 
   def print(scan) do
-    Enum.each((scan.min_y - 1)..scan.max_y, fn y ->
+    Enum.each(0..scan.max_y, fn y ->
       Enum.each((scan.min_x - 1)..(scan.max_x + 1), fn x ->
         IO.write(cell(scan, x, y))
       end)
