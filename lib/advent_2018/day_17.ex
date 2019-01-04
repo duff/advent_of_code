@@ -17,11 +17,8 @@ defmodule Advent2018.Day17 do
   def part_a(input) do
     %Scan{}
     |> initialize(input)
-    # |> IO.inspect(limit: 10000)
-    # |> print
     |> flow(500, 1)
-    # |> IO.inspect(limit: 10000)
-    |> print
+    # |> print
     |> water_count
   end
 
@@ -34,32 +31,20 @@ defmodule Advent2018.Day17 do
   end
 
   defp flow(scan, x, y) do
-    # print(scan)
-    cond do
-      clay_below?(scan, x, y) ->
-        spread(scan, x, y)
-
-      # water_below?(scan, x, y) ->
-      #   %{scan | water: MapSet.put(water, {x, y}), iterations: scan.iterations + 1}
-      #   |> spread(x, y - 1)
-
-      # water_below?(scan, x, y) ->
-      #   spread(scan, x, y - 1)
-      #   scan
-
-      true ->
-        scan
-        |> add_water(x, y)
-        |> flow(x, y + 1)
+    if clay_below?(scan, x, y) do
+      spread(scan, x, y)
+    else
+      scan
+      |> add_water(x, y)
+      |> flow(x, y + 1)
     end
   end
 
-  defp spread(%Scan{iterations: @max_iterations} = scan, x, y) do
+  defp spread(%Scan{iterations: @max_iterations} = scan, _x, _y) do
     scan
   end
 
   defp spread(scan, x, y) do
-    # print(scan)
     if in_bucket?(scan, x, y) do
       scan
       |> fill_row(x, y)
@@ -91,13 +76,12 @@ defmodule Advent2018.Day17 do
     end
   end
 
-  defp add_water(%Scan{iterations: @max_iterations} = scan, x, y) do
+  defp add_water(%Scan{iterations: @max_iterations} = scan, _x, _y) do
     scan
   end
 
   defp add_water(%Scan{water: water} = scan, x, y) do
     if clay?(scan, x, y) do
-      # raise "Can't add water to {#{x}, #{y}}. Clay is there."
       IO.puts("Can't add water to {#{x}, #{y}}. Clay is there.")
       %{scan | water: MapSet.put(water, {x, y}), iterations: scan.iterations + 1}
     else
