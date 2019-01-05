@@ -11,82 +11,85 @@ defmodule Advent2018.Day19 do
     input
     |> parse
     |> run
+    |> register_0
   end
 
   defp run(program) do
-    [first, second, third | _rest] = program.instructions
+    next_instruction = Enum.at(program.instructions, ip_value(program))
 
     program
-    |> IO.inspect(label: :start)
-    |> execute(first)
-    |> IO.inspect(label: :executed_first)
-    |> execute(second)
-    |> IO.inspect(label: :executed_second)
-    |> execute(third)
-    |> IO.inspect(label: :executed_third)
+    |> run(next_instruction)
   end
 
-  def execute(%Program{registers: regs} = program, [:addi, a, b, c]) do
+  defp run(program, nil), do: program
+
+  defp run(program, instruction) do
+    program
+    |> execute(instruction)
+    |> run
+  end
+
+  defp execute(%Program{registers: regs} = program, [:addi, a, b, c]) do
     set_value(program, c, Enum.at(regs, a) + b)
   end
 
-  def execute(%Program{registers: regs} = program, [:addr, a, b, c]) do
+  defp execute(%Program{registers: regs} = program, [:addr, a, b, c]) do
     set_value(program, c, Enum.at(regs, a) + Enum.at(regs, b))
   end
 
-  def execute(%Program{registers: regs} = program, [:mulr, a, b, c]) do
+  defp execute(%Program{registers: regs} = program, [:mulr, a, b, c]) do
     set_value(program, c, Enum.at(regs, a) * Enum.at(regs, b))
   end
 
-  def execute(%Program{registers: regs} = program, [:muli, a, b, c]) do
+  defp execute(%Program{registers: regs} = program, [:muli, a, b, c]) do
     set_value(program, c, Enum.at(regs, a) * b)
   end
 
-  def execute(%Program{registers: regs} = program, [:banr, a, b, c]) do
+  defp execute(%Program{registers: regs} = program, [:banr, a, b, c]) do
     set_value(program, c, Enum.at(regs, a) &&& Enum.at(regs, b))
   end
 
-  def execute(%Program{registers: regs} = program, [:bani, a, b, c]) do
+  defp execute(%Program{registers: regs} = program, [:bani, a, b, c]) do
     set_value(program, c, Enum.at(regs, a) &&& b)
   end
 
-  def execute(%Program{registers: regs} = program, [:borr, a, b, c]) do
+  defp execute(%Program{registers: regs} = program, [:borr, a, b, c]) do
     set_value(program, c, Enum.at(regs, a) ||| Enum.at(regs, b))
   end
 
-  def execute(%Program{registers: regs} = program, [:bori, a, b, c]) do
+  defp execute(%Program{registers: regs} = program, [:bori, a, b, c]) do
     set_value(program, c, Enum.at(regs, a) ||| b)
   end
 
-  def execute(%Program{registers: regs} = program, [:setr, a, _b, c]) do
+  defp execute(%Program{registers: regs} = program, [:setr, a, _b, c]) do
     set_value(program, c, Enum.at(regs, a))
   end
 
-  def execute(program, [:seti, a, _b, c]) do
+  defp execute(program, [:seti, a, _b, c]) do
     set_value(program, c, a)
   end
 
-  def execute(%Program{registers: regs} = program, [:gtir, a, b, c]) do
+  defp execute(%Program{registers: regs} = program, [:gtir, a, b, c]) do
     set_boolean_value(program, c, a > Enum.at(regs, b))
   end
 
-  def execute(%Program{registers: regs} = program, [:gtri, a, b, c]) do
+  defp execute(%Program{registers: regs} = program, [:gtri, a, b, c]) do
     set_boolean_value(program, c, Enum.at(regs, a) > b)
   end
 
-  def execute(%Program{registers: regs} = program, [:gtrr, a, b, c]) do
+  defp execute(%Program{registers: regs} = program, [:gtrr, a, b, c]) do
     set_boolean_value(program, c, Enum.at(regs, a) > Enum.at(regs, b))
   end
 
-  def execute(%Program{registers: regs} = program, [:eqir, a, b, c]) do
+  defp execute(%Program{registers: regs} = program, [:eqir, a, b, c]) do
     set_boolean_value(program, c, a == Enum.at(regs, b))
   end
 
-  def execute(%Program{registers: regs} = program, [:eqri, a, b, c]) do
+  defp execute(%Program{registers: regs} = program, [:eqri, a, b, c]) do
     set_boolean_value(program, c, Enum.at(regs, a) == b)
   end
 
-  def execute(%Program{registers: regs} = program, [:eqrr, a, b, c]) do
+  defp execute(%Program{registers: regs} = program, [:eqrr, a, b, c]) do
     set_boolean_value(program, c, Enum.at(regs, a) == Enum.at(regs, b))
   end
 
@@ -96,8 +99,11 @@ defmodule Advent2018.Day19 do
   end
 
   defp increment_ip(%Program{registers: regs, ip_register: ip_register} = program) do
-    ip_value = Enum.at(regs, ip_register)
-    %{program | registers: List.replace_at(regs, ip_register, ip_value + 1)}
+    %{program | registers: List.replace_at(regs, ip_register, ip_value(program) + 1)}
+  end
+
+  defp ip_value(%Program{registers: regs, ip_register: ip_register}) do
+    Enum.at(regs, ip_register)
   end
 
   defp set_boolean_value(program, index, condition) do
@@ -119,4 +125,6 @@ defmodule Advent2018.Day19 do
     [opcode, a, b, c] = String.split(line)
     [String.to_atom(opcode), String.to_integer(a), String.to_integer(b), String.to_integer(c)]
   end
+
+  defp register_0(%Program{registers: regs}), do: List.first(regs)
 end

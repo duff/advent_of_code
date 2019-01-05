@@ -15,10 +15,12 @@ defmodule Advent2018.Day19Test do
     seti 9 0 5
     """
 
-    Day19.part_a(input)
+    assert Day19.part_a(input) == 7
   end
 
-  test "addi" do
-    # assert Day19.execute([:addi, 2, 1, 2], [3, 2, 1, 1, 0, 0]) == [3, 2, 2, 1, 0, 0]
+  @tag :real
+  test "part_a real" do
+    input = File.read!("test/lib/advent_2018/input/day_19.txt")
+    assert Day19.part_a(input) == 888
   end
 end
