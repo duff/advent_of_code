@@ -6,12 +6,38 @@ defmodule Advent2018.Day18 do
     |> resource_value
   end
 
+  def part_b(input) do
+    {cycle_start, cycle_end, remaining_minutes, map} =
+      input
+      |> parse
+      |> transform_until_cycle(1_000_000_000)
+
+    cycle_length = cycle_end - cycle_start
+    needed_minutes = rem(remaining_minutes, cycle_length)
+
+    map
+    |> transform(needed_minutes)
+    |> resource_value
+  end
+
   defp resource_value(map) do
     count(map, :trees) * count(map, :lumberyard)
   end
 
+  defp transform_until_cycle(map, times) do
+    Enum.reduce_while(1..times, {map, %{}}, fn index, {acc, previous_states} ->
+      transformed = transform(acc)
+
+      if Map.has_key?(previous_states, transformed) do
+        {:halt, {Map.get(previous_states, transformed), index, times - index, transformed}}
+      else
+        {:cont, {transformed, Map.put(previous_states, transformed, index)}}
+      end
+    end)
+  end
+
   defp transform(map, times) do
-    Enum.reduce(1..times, map, fn _each, acc ->
+    Enum.reduce(1..times, map, fn _index, acc ->
       transform(acc)
     end)
   end
