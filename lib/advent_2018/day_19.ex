@@ -14,11 +14,15 @@ defmodule Advent2018.Day19 do
     |> register_0
   end
 
-  defp run(program) do
-    next_instruction = Enum.at(program.instructions, ip_value(program))
+  def part_b(input) do
+    %{parse(input) | registers: [1, 0, 0, 0, 0, 0]}
+    |> run
+    |> register_0
+  end
 
+  defp run(program) do
     program
-    |> run(next_instruction)
+    |> run(next_instruction(program))
   end
 
   defp run(program, nil), do: program
@@ -27,6 +31,10 @@ defmodule Advent2018.Day19 do
     program
     |> execute(instruction)
     |> run
+  end
+
+  defp next_instruction(program) do
+    Enum.at(program.instructions, ip_value(program))
   end
 
   defp execute(%Program{registers: regs} = program, [:addi, a, b, c]) do

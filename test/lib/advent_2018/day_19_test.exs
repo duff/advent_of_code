@@ -23,4 +23,11 @@ defmodule Advent2018.Day19Test do
     input = File.read!("test/lib/advent_2018/input/day_19.txt")
     assert Day19.part_a(input) == 888
   end
+
+  # @tag :real
+  # test "part_b real" do
+  #   Hmmmm... This never seems to end. Need to mull on it more.
+  #   input = File.read!("test/lib/advent_2018/input/day_19.txt")
+  #   assert Day19.part_b(input) == 888
+  # end
 end
