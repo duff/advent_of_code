@@ -7,8 +7,8 @@ defmodule Advent2018.Day22Test do
     assert Day22.part_a(510, {10, 10}) == 114
   end
 
-  @tag :real
-  test "part_a real" do
-    assert Day22.part_a(7863, {14, 760}) == 333
-  end
+  # @tag :real
+  # test "part_a real" do
+  #   assert Day22.part_a(7863, {14, 760}) == 333
+  # end
 end
