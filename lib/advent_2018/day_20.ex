@@ -1,11 +1,17 @@
 defmodule Advent2018.Day20 do
-  use Bitwise
-
   def part_a(input) do
     input
     |> parse
     |> execute(%{})
     |> largest_door_count
+  end
+
+  def part_b(input) do
+    input
+    |> parse
+    |> execute(%{})
+    |> Enum.filter(fn {_coord, distance} -> distance >= 1000 end)
+    |> Enum.count()
   end
 
   defp parse(input) do
