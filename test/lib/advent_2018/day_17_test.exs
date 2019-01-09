@@ -42,6 +42,6 @@ defmodule Advent2018.Day17Test do
   @tag :real
   test "part_a real" do
     input = File.read!("test/lib/advent_2018/input/day_17.txt")
-    assert Day17.part_a(input) == 38225
+    assert Day17.part_a(input) == 37991
   end
 end

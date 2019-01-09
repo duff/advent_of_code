@@ -112,7 +112,7 @@ defmodule Advent2018.Day13 do
     end
   end
 
-  defp move_train_exploding_collision(%Railroad{trains: trains} = railroad, coordinates) do
+  defp move_train_exploding_collision(railroad, coordinates) do
     case Train.new_position(train_at(railroad, coordinates)) do
       {:ok, new_position, train} ->
         if train_at(railroad, new_position) do
@@ -224,37 +224,5 @@ defmodule Advent2018.Day13 do
         |> update_bottom_right({x, y})
       end)
     end)
-  end
-
-  defp print(railroad) do
-    IO.puts("")
-
-    railroad
-    |> display_string
-    |> IO.puts()
-
-    IO.puts("")
-
-    railroad
-  end
-
-  defp display_string(%Railroad{bottom_y: bottom_y} = railroad) do
-    Enum.reduce(0..bottom_y, [], fn y, rows ->
-      rows ++ [row_string(railroad, y)]
-    end)
-    |> Enum.join("\n")
-  end
-
-  defp row_string(%Railroad{bottom_x: bottom_x} = railroad, y) do
-    Enum.reduce(0..bottom_x, "", fn x, row ->
-      row <> display_character(railroad, x, y)
-    end)
-  end
-
-  defp display_character(%Railroad{trains: trains, tracks: tracks}, x, y) do
-    case Map.get(trains, {x, y}) do
-      %Train{character: character} -> character
-      _ -> Map.get(tracks, {x, y}, " ")
-    end
   end
 end
