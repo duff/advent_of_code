@@ -10,15 +10,35 @@ defmodule Advent2018.Day22 do
 
     Enum.reduce(0..y_target, survey, fn y, acc ->
       Enum.reduce(0..x_target, acc, fn x, acc ->
-        new_risk = risk(acc, {x, y})
-        %{acc | risks: [new_risk | acc.risks]}
+        add_risk(acc, {x, y})
       end)
     end)
     |> risk_total
   end
 
-  defp risk(survey, {x, y}) do
-    erosion_level(survey, {x, y})
+  defp add_risk(survey, coord) do
+    survey
+    |> cache_erosion(coord)
+    |> remember_risk(coord)
+  end
+
+  defp remember_risk(survey, coord) do
+    new_risk = risk(survey, coord)
+    %{survey | risks: [new_risk | survey.risks]}
+  end
+
+  defp cache_erosion(%Survey{erosion_cache: cache} = survey, coord) do
+    new_cache =
+      Map.put_new_lazy(cache, coord, fn ->
+        (geologic_index(survey, coord) + survey.depth)
+        |> Integer.mod(20183)
+      end)
+
+    %{survey | erosion_cache: new_cache}
+  end
+
+  defp risk(survey, coord) do
+    erosion_level(survey, coord)
     |> Integer.mod(3)
   end
 
@@ -37,9 +57,8 @@ defmodule Advent2018.Day22 do
     erosion_level(survey, {x - 1, y}) * erosion_level(survey, {x, y - 1})
   end
 
-  defp erosion_level(survey, {x, y}) do
-    (geologic_index(survey, {x, y}) + survey.depth)
-    |> Integer.mod(20183)
+  defp erosion_level(%Survey{erosion_cache: cache}, coord) do
+    Map.get(cache, coord)
   end
 
   defp initialize(depth, {x_target, y_target}) do
