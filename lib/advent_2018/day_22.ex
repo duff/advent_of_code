@@ -1,5 +1,14 @@
 defmodule Advent2018.Day22.Survey do
-  defstruct x_target: nil, y_target: nil, depth: nil, risks: [], erosion_cache: %{}
+  defstruct x_target: nil,
+            y_target: nil,
+            x_max: nil,
+            y_max: nil,
+            depth: nil,
+            risks: [],
+            regions: %{},
+            erosion_cache: %{},
+            visited: MapSet.new(),
+            graph: %{}
 end
 
 defmodule Advent2018.Day22 do
@@ -16,15 +25,117 @@ defmodule Advent2018.Day22 do
     |> risk_total
   end
 
+  def part_b(depth, {x_target, y_target}) do
+    initialize(depth, {x_target, y_target})
+    |> add_regions
+    |> shortest_time
+  end
+
+  defp shortest_time(survey) do
+    mouth = {{0, 0}, :torch}
+    new_graph = Map.put(survey.graph, mouth, {0, nil})
+
+    %{survey | graph: new_graph}
+    |> add_node(mouth)
+  end
+
+  defp add_node(%Survey{x_target: x, y_target: y} = survey, {{x, y}, :torch} = target_node) do
+    {distance, _} = Map.get(survey.graph, target_node)
+    distance
+  end
+
+  defp add_node(%Survey{graph: graph} = survey, from_node) do
+    adjacent = new_tool_nodes(survey, from_node) ++ connected_nodes_using_same_tool(survey, from_node)
+
+    new_graph =
+      adjacent
+      |> Enum.reduce(graph, fn {node, distance}, acc ->
+        Map.update(acc, node, {distance, from_node}, fn {existing_distance, _previous_node} = existing ->
+          if distance < existing_distance do
+            {distance, from_node}
+          else
+            existing
+          end
+        end)
+      end)
+
+    new_survey = %{survey | graph: new_graph, visited: MapSet.put(survey.visited, from_node)}
+    add_node(new_survey, next_node(new_survey))
+  end
+
+  defp next_node(%Survey{graph: graph, visited: visited}) do
+    {next_one, _} =
+      Enum.min_by(graph, fn {node, {distance, _}} ->
+        !MapSet.member?(visited, node) && distance
+      end)
+
+    next_one
+  end
+
+  defp new_tool_nodes(survey, {from_coord, from_tool} = from_node) do
+    region = region(survey, from_coord)
+    [new_tool] = possible_tools(region) -- [from_tool]
+    {distance, _} = Map.get(survey.graph, from_node)
+
+    if MapSet.member?(survey.visited, {from_coord, new_tool}) do
+      []
+    else
+      [{{from_coord, new_tool}, 7 + distance}]
+    end
+  end
+
+  defp connected_nodes_using_same_tool(survey, {from_coord, from_tool} = from_node) do
+    {distance, _} = Map.get(survey.graph, from_node)
+
+    for coord <- adjacent_coords(from_coord),
+        region = region(survey, coord),
+        from_tool in possible_tools(region),
+        !MapSet.member?(survey.visited, {coord, from_tool}) do
+      {{coord, from_tool}, 1 + distance}
+    end
+  end
+
+  defp region(%Survey{regions: regions}, coord), do: Map.get(regions, coord)
+
+  defp possible_tools(:rocky), do: [:climbing_gear, :torch]
+  defp possible_tools(:wet), do: [:climbing_gear, :neither]
+  defp possible_tools(:narrow), do: [:torch, :neither]
+
+  defp adjacent_coords({x, y}) do
+    [{x + 1, y}, {x - 1, y}, {x, y + 1}, {x, y - 1}]
+    |> Enum.reject(fn {x, y} -> x < 0 || y < 0 end)
+  end
+
+  defp add_regions(survey) do
+    Enum.reduce(0..survey.y_max, survey, fn y, acc_x ->
+      Enum.reduce(0..survey.x_max, acc_x, fn x, acc ->
+        add_region(acc, {x, y})
+      end)
+    end)
+  end
+
   defp add_risk(survey, coord) do
     survey
     |> cache_erosion(coord)
     |> remember_risk(coord)
   end
 
+  defp add_region(survey, coord) do
+    survey
+    |> cache_erosion(coord)
+    |> remember_region(coord)
+  end
+
   defp remember_risk(survey, coord) do
     new_risk = risk(survey, coord)
     %{survey | risks: [new_risk | survey.risks]}
+  end
+
+  defp remember_region(%Survey{regions: regions} = survey, coord) do
+    new_region = risk(survey, coord) |> region
+    new_regions = Map.put(regions, coord, new_region)
+
+    %{survey | regions: new_regions}
   end
 
   defp cache_erosion(%Survey{erosion_cache: cache} = survey, coord) do
@@ -41,6 +152,10 @@ defmodule Advent2018.Day22 do
     erosion_level(survey, coord)
     |> Integer.mod(3)
   end
+
+  defp region(0), do: :rocky
+  defp region(1), do: :wet
+  defp region(2), do: :narrow
 
   defp geologic_index(_survey, {0, 0}), do: 0
   defp geologic_index(%Survey{x_target: x, y_target: y}, {x, y}), do: 0
@@ -62,7 +177,7 @@ defmodule Advent2018.Day22 do
   end
 
   defp initialize(depth, {x_target, y_target}) do
-    %Survey{depth: depth, x_target: x_target, y_target: y_target}
+    %Survey{depth: depth, x_target: x_target, y_target: y_target, x_max: x_target + 100, y_max: y_target + 100}
   end
 
   defp risk_total(%Survey{risks: risks}) do
