@@ -40,27 +40,25 @@ defmodule Advent2018.Day22 do
   end
 
   defp add_node(%Survey{x_target: x, y_target: y} = survey, {{x, y}, :torch} = target_node) do
-    {distance, _} = Map.get(survey.graph, target_node)
-    distance
+    distance(survey, target_node)
   end
 
-  defp add_node(%Survey{graph: graph} = survey, from_node) do
-    adjacent = new_tool_nodes(survey, from_node) ++ connected_nodes_using_same_tool(survey, from_node)
-
-    new_graph =
-      adjacent
-      |> Enum.reduce(graph, fn {node, distance}, acc ->
-        Map.update(acc, node, {distance, from_node}, fn {existing_distance, _previous_node} = existing ->
-          if distance < existing_distance do
-            {distance, from_node}
-          else
-            existing
-          end
-        end)
-      end)
-
-    new_survey = %{survey | graph: new_graph, visited: MapSet.put(survey.visited, from_node)}
+  defp add_node(survey, from_node) do
+    new_survey = %{survey | graph: updated_graph(survey, from_node), visited: MapSet.put(survey.visited, from_node)}
     add_node(new_survey, next_node(new_survey))
+  end
+
+  defp updated_graph(survey, from_node) do
+    (new_tool_nodes(survey, from_node) ++ connected_nodes_using_same_tool(survey, from_node))
+    |> Enum.reduce(survey.graph, fn {node, distance}, acc ->
+      Map.update(acc, node, {distance, from_node}, fn {existing_distance, _previous_node} = existing ->
+        if distance < existing_distance do
+          {distance, from_node}
+        else
+          existing
+        end
+      end)
+    end)
   end
 
   defp next_node(%Survey{graph: graph, visited: visited}) do
@@ -75,24 +73,26 @@ defmodule Advent2018.Day22 do
   defp new_tool_nodes(survey, {from_coord, from_tool} = from_node) do
     region = region(survey, from_coord)
     [new_tool] = possible_tools(region) -- [from_tool]
-    {distance, _} = Map.get(survey.graph, from_node)
 
     if MapSet.member?(survey.visited, {from_coord, new_tool}) do
       []
     else
-      [{{from_coord, new_tool}, 7 + distance}]
+      [{{from_coord, new_tool}, 7 + distance(survey, from_node)}]
     end
   end
 
   defp connected_nodes_using_same_tool(survey, {from_coord, from_tool} = from_node) do
-    {distance, _} = Map.get(survey.graph, from_node)
-
     for coord <- adjacent_coords(from_coord),
         region = region(survey, coord),
         from_tool in possible_tools(region),
         !MapSet.member?(survey.visited, {coord, from_tool}) do
-      {{coord, from_tool}, 1 + distance}
+      {{coord, from_tool}, 1 + distance(survey, from_node)}
     end
+  end
+
+  defp distance(%Survey{graph: graph}, from_node) do
+    {distance, _} = Map.get(graph, from_node)
+    distance
   end
 
   defp region(%Survey{regions: regions}, coord), do: Map.get(regions, coord)
@@ -177,7 +177,7 @@ defmodule Advent2018.Day22 do
   end
 
   defp initialize(depth, {x_target, y_target}) do
-    %Survey{depth: depth, x_target: x_target, y_target: y_target, x_max: x_target + 100, y_max: y_target + 100}
+    %Survey{depth: depth, x_target: x_target, y_target: y_target, x_max: x_target + 50, y_max: y_target + 50}
   end
 
   defp risk_total(%Survey{risks: risks}) do

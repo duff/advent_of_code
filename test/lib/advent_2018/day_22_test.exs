@@ -19,6 +19,6 @@ defmodule Advent2018.Day22Test do
 
   @tag :real
   test "part_b real" do
-    assert Day22.part_b(7863, {14, 760}) == 1057
+    assert Day22.part_b(7863, {14, 760}) == 1054
   end
 end
