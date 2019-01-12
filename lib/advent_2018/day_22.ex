@@ -177,7 +177,7 @@ defmodule Advent2018.Day22 do
   end
 
   defp initialize(depth, {x_target, y_target}) do
-    %Survey{depth: depth, x_target: x_target, y_target: y_target, x_max: x_target + 50, y_max: y_target + 50}
+    %Survey{depth: depth, x_target: x_target, y_target: y_target, x_max: x_target + 25, y_max: y_target + 25}
   end
 
   defp risk_total(%Survey{risks: risks}) do
