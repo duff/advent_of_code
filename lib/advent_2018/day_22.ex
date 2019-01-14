@@ -14,19 +14,14 @@ end
 defmodule Advent2018.Day22 do
   alias Advent2018.Day22.Survey
 
-  def part_a(depth, {x_target, y_target}) do
-    survey = initialize(depth, {x_target, y_target})
-
-    Enum.reduce(0..y_target, survey, fn y, acc ->
-      Enum.reduce(0..x_target, acc, fn x, acc ->
-        add_risk(acc, {x, y})
-      end)
-    end)
+  def part_a(depth, target_coordinates) do
+    initialize(depth, target_coordinates)
+    |> add_risks(target_coordinates)
     |> risk_total
   end
 
-  def part_b(depth, {x_target, y_target}) do
-    initialize(depth, {x_target, y_target})
+  def part_b(depth, target_coordinates) do
+    initialize(depth, target_coordinates)
     |> add_regions
     |> shortest_time
   end
@@ -104,6 +99,14 @@ defmodule Advent2018.Day22 do
   defp adjacent_coords({x, y}) do
     [{x + 1, y}, {x - 1, y}, {x, y + 1}, {x, y - 1}]
     |> Enum.reject(fn {x, y} -> x < 0 || y < 0 end)
+  end
+
+  defp add_risks(survey, {x_target, y_target}) do
+    Enum.reduce(0..y_target, survey, fn y, acc ->
+      Enum.reduce(0..x_target, acc, fn x, acc ->
+        add_risk(acc, {x, y})
+      end)
+    end)
   end
 
   defp add_regions(survey) do
