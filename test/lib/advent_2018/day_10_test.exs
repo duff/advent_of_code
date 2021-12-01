@@ -37,7 +37,7 @@ defmodule Advent2018.Day10Test do
 
   test "smallest_sky" do
     positions = Day10.to_positions(example_input())
-    assert {_positions, area, _seconds} = Day10.smallest_sky(positions)
+    assert {_positions, 99, _seconds} = Day10.smallest_sky(positions)
   end
 
   defp example_input do

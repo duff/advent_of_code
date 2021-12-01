@@ -1,5 +1,3 @@
-# Advent2018
+# Advent Of Code
 
-My 2018 Advent of Code exercises. https://adventofcode.com/2018
-
-
+My Advent of Code exercises. https://adventofcode.com/
