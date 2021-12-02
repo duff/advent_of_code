@@ -18,7 +18,7 @@ defmodule Advent2018.Day19Test do
     assert Day19.part_a(input) == 7
   end
 
-  @tag :real
+  @tag :real_data_slow
   test "part_a real" do
     input = File.read!("test/lib/advent_2018/input/day_19.txt")
     assert Day19.part_a(input) == 888

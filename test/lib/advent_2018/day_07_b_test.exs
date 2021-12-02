@@ -17,7 +17,6 @@ defmodule Advent2018.Day07BTest do
     assert Day07B.duration(input, 2, 64) == 15
   end
 
-  @tag :real
   test "duration real" do
     input = File.read!("test/lib/advent_2018/input/day_07.txt") |> String.trim()
     assert Day07B.duration(input, 5, 4) == 1046

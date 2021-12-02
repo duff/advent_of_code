@@ -99,13 +99,13 @@ defmodule Advent2018.Day06Test do
     assert Day06.largest_finite_area(input) == 17
   end
 
-  @tag :real
+  @tag :real_data_slow
   test "largest_finite_area for real" do
     input = File.read!("test/lib/advent_2018/input/day_06.txt") |> String.trim()
     assert Day06.largest_finite_area(input) == 4011
   end
 
-  @tag :real
+  @tag :real_data_slow
   test "desired_region_size real" do
     input = File.read!("test/lib/advent_2018/input/day_06.txt") |> String.trim()
     assert Day06.desired_region_size(input, 10000) == 46054

@@ -14,7 +14,7 @@ defmodule Advent2018.Day03BTest do
     assert Day03B.pristine(input) == 3
   end
 
-  @tag :real
+  @tag :real_data_slow
   test "pristine with real value" do
     input = File.read!("test/lib/advent_2018/input/day_03.txt") |> String.trim()
     assert Day03B.pristine(input) == 909

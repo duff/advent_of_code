@@ -63,13 +63,11 @@ defmodule Advent2018.Day08Test do
     assert Day08.root_node_value(input) == 66
   end
 
-  @tag :real
   test "metadata_sum real" do
     input = File.read!("test/lib/advent_2018/input/day_08.txt") |> String.trim()
     assert Day08.metadata_sum(input) == 44338
   end
 
-  @tag :real
   test "root_node_value real" do
     input = File.read!("test/lib/advent_2018/input/day_08.txt") |> String.trim()
     assert Day08.root_node_value(input) == 37560

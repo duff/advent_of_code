@@ -69,14 +69,14 @@ defmodule Advent2018.Day11Test do
              }
   end
 
-  @tag :real
+  @tag :real_data_slow
   test "part_a real" do
     assert Day11.part_a(18) == {33, 45}
     assert Day11.part_a(42) == {21, 61}
     assert Day11.part_a(1309) == {20, 43}
   end
 
-  @tag :real
+  @tag :real_data_slow
   test "largest_power_grid real" do
     assert Day11.part_b(18) == {90, 269, 16}
     assert Day11.part_b(42) == {232, 251, 12}

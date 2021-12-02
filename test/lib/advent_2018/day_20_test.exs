@@ -13,13 +13,11 @@ defmodule Advent2018.Day20Test do
     assert Day20.part_a("^WSSEESWWWNW(S|NENNEEEENN(ESSSSW(NWSW|SSEN)|WSWWN(E|WWS(E|SS))))$") == 31
   end
 
-  @tag :real
   test "part_a real" do
     input = File.read!("test/lib/advent_2018/input/day_20.txt")
     assert Day20.part_a(input) == 3721
   end
 
-  @tag :real
   test "part_b real" do
     input = File.read!("test/lib/advent_2018/input/day_20.txt")
     assert Day20.part_b(input) == 8613

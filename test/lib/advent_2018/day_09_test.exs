@@ -14,7 +14,7 @@ defmodule Advent2018.Day09Test do
     # assert Day09.score(13, 7999) == 146_373
   end
 
-  @tag :real
+  @tag :real_data_slow
   test "score real" do
     # Not sure why this is failing on the site. :(
     assert Day09.score(455, 71223) == 393_972

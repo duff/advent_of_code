@@ -44,7 +44,6 @@ defmodule Advent2018.Day01ATest do
     assert Day01A.calibrate(input) == -6
   end
 
-  @tag :real
   test "example 5" do
     input = File.read!("test/lib/advent_2018/input/day_01.txt") |> String.trim()
     assert Day01A.calibrate(input) == 590

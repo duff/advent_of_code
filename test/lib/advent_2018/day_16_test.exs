@@ -43,13 +43,11 @@ defmodule Advent2018.Day16Test do
     assert Day16.opcodes_for_sample(input) == {9, ~w[addi mulr seti]a}
   end
 
-  @tag :real
   test "part_a real" do
     input = File.read!("test/lib/advent_2018/input/day_16_a.txt")
     assert Day16.part_a(input) == 544
   end
 
-  @tag :real
   test "part_b real" do
     input_samples = File.read!("test/lib/advent_2018/input/day_16_a.txt")
     input_program = File.read!("test/lib/advent_2018/input/day_16_b.txt")

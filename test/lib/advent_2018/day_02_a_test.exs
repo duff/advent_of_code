@@ -37,7 +37,6 @@ defmodule Advent2018.Day02ATest do
     assert Day02A.checksum(input) == 12
   end
 
-  @tag :real
   test "checksum real input" do
     input = File.read!("test/lib/advent_2018/input/day_02.txt") |> String.trim()
     assert Day02A.checksum(input) == 9139

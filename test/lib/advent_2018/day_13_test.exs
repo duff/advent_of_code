@@ -44,13 +44,13 @@ defmodule Advent2018.Day13Test do
     assert Day13.part_b(input) == {6, 4}
   end
 
-  @tag :real
+  @tag :real_data_slow
   test "part_a real" do
     input = File.read!("test/lib/advent_2018/input/day_13.txt")
     assert Day13.part_a(input) == {119, 41}
   end
 
-  @tag :real
+  @tag :real_data_slow
   test "part_b real" do
     input = File.read!("test/lib/advent_2018/input/day_13.txt")
     assert Day13.part_b(input) == {45, 136}

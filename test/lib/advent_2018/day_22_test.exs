@@ -12,12 +12,12 @@ defmodule Advent2018.Day22Test do
     Day22.part_b(510, {10, 10})
   end
 
-  @tag :real
+  @tag :real_data_slow
   test "part_a real" do
     assert Day22.part_a(7863, {14, 760}) == 11462
   end
 
-  @tag :real
+  @tag :real_data_slow
   test "part_b real" do
     assert Day22.part_b(7863, {14, 760}) == 1054
   end

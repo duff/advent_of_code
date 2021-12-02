@@ -1,3 +1,3 @@
-ExUnit.configure(exclude: [:real])
+ExUnit.configure(exclude: [:real_data_slow])
 
 ExUnit.start()
