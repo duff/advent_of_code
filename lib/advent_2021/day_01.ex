@@ -2,7 +2,7 @@ defmodule Advent2021.Day01 do
   def increases(input) do
     input
     |> String.split()
-    |> Enum.map(&String.to_integer(&1))
+    |> Enum.map(&String.to_integer/1)
     |> Enum.reduce(&accumulate_increases/2)
     |> Kernel.elem(0)
   end
@@ -11,8 +11,7 @@ defmodule Advent2021.Day01 do
     input
     |> String.split()
     |> Enum.map(&String.to_integer(&1))
-    |> Enum.chunk_every(3, 1)
-    |> Enum.filter(fn each -> Enum.count(each) == 3 end)
+    |> Enum.chunk_every(3, 1, :discard)
     |> Enum.map(fn each -> Enum.sum(each) end)
     |> Enum.reduce(&accumulate_increases/2)
     |> Kernel.elem(0)
