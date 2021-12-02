@@ -3,8 +3,8 @@ defmodule Advent2021.Day01 do
     input
     |> String.split()
     |> Enum.map(&String.to_integer/1)
-    |> Enum.reduce(&accumulate_increases/2)
-    |> Kernel.elem(0)
+    |> Enum.chunk_every(2, 1, :discard)
+    |> Enum.count(fn [left, right] -> right > left end)
   end
 
   def sliding_window_increases(input) do
@@ -13,23 +13,7 @@ defmodule Advent2021.Day01 do
     |> Enum.map(&String.to_integer(&1))
     |> Enum.chunk_every(3, 1, :discard)
     |> Enum.map(fn each -> Enum.sum(each) end)
-    |> Enum.reduce(&accumulate_increases/2)
-    |> Kernel.elem(0)
-  end
-
-  defp accumulate_increases(each, {increases, previous_element}) do
-    if each > previous_element do
-      {increases + 1, each}
-    else
-      {increases, each}
-    end
-  end
-
-  defp accumulate_increases(second_element, first_element) do
-    if second_element > first_element do
-      {1, second_element}
-    else
-      {0, second_element}
-    end
+    |> Enum.chunk_every(2, 1, :discard)
+    |> Enum.count(fn [left, right] -> right > left end)
   end
 end
