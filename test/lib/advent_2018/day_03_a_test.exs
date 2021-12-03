@@ -17,7 +17,8 @@ defmodule Advent2018.Day03ATest do
     assert Day03A.double_booked(input) == 4
   end
 
-  test "double_booked" do
+  @tag :real_data_slow
+  test "double_booked real" do
     input = File.read!("test/lib/advent_2018/input/day_03.txt") |> String.trim()
     assert Day03A.double_booked(input) == 101_781
   end

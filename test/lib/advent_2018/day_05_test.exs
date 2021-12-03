@@ -28,6 +28,7 @@ defmodule Advent2018.Day05Test do
     assert Day05.num_units(input) == 9386
   end
 
+  @tag :real_data_slow
   test "shortest_length for real" do
     input = File.read!("test/lib/advent_2018/input/day_05.txt") |> String.trim()
     assert Day05.shortest_length(input) == 4876

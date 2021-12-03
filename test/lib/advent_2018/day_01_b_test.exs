@@ -59,7 +59,8 @@ defmodule Advent2018.Day01BTest do
     assert Day01B.first_duplicate(input) == 14
   end
 
-  test "example 6" do
+  @tag :real_data_slow
+  test "real example 6" do
     input = File.read!("test/lib/advent_2018/input/day_01.txt") |> String.trim()
     assert Day01B.first_duplicate(input) == 83445
   end
