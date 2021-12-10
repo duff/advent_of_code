@@ -12,6 +12,16 @@ defmodule Advent2021.Day03Test do
     assert Day03.power_consumption(input) == 2261546
   end
 
+  test "life_support_rating" do
+    assert Day03.life_support_rating(input()) == 230
+  end
+
+  @tag :real_data_slow
+  test "life_support_rating real" do
+    input = File.read!("test/lib/advent_2021/input/day_03.txt")
+    assert Day03.life_support_rating(input) == 6775520
+  end
+
   defp input do
     """
     00100
