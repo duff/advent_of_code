@@ -3,6 +3,7 @@ defmodule Advent2018.Day09Test do
 
   alias Advent2018.Day09
 
+  @tag :real_data_slow
   test "score" do
     assert Day09.score(9, 25) == 32
     assert Day09.score(10, 1618) == 8317
