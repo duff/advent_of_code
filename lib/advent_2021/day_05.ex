@@ -5,10 +5,7 @@ defmodule Advent2021.Day05.Segment do
   defstruct [:x1, :y1, :x2, :y2]
 
   def new(input) do
-    [first, _, last] = String.split(input)
-
-    [x1, y1] = split_map(first)
-    [x2, y2] = split_map(last)
+    [x1, y1, x2, y2] = number_parts(input)
     %Segment{x1: x1, y1: y1, x2: x2, y2: y2}
   end
 
@@ -30,9 +27,9 @@ defmodule Advent2021.Day05.Segment do
 
   def diagonal_points(_), do: []
 
-  defp split_map(string) do
-    string
-    |> String.split(",")
+  defp number_parts(input) do
+    input
+    |> String.split([",", " -> "])
     |> Enum.map(&String.to_integer/1)
   end
 end
@@ -46,8 +43,7 @@ defmodule Advent2021.Day05 do
     |> Enum.map(&Segment.hv_points/1)
     |> List.flatten()
     |> Enum.frequencies()
-    |> Enum.filter(fn {_, count} -> count > 1 end)
-    |> Enum.count()
+    |> Enum.count(fn {_, count} -> count > 1 end)
   end
 
   def overlapping_point_count_with_diagonals(input) do
@@ -56,8 +52,7 @@ defmodule Advent2021.Day05 do
     |> all_points
     |> List.flatten()
     |> Enum.frequencies()
-    |> Enum.filter(fn {_, count} -> count > 1 end)
-    |> Enum.count()
+    |> Enum.count(fn {_, count} -> count > 1 end)
   end
 
   defp all_points(segments) do
