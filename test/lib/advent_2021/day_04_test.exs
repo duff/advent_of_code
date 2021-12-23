@@ -38,13 +38,22 @@ defmodule Advent2021.Day04Test do
     assert Board.unmarked_number_sum(Board.mark(board, 10)) == 45
   end
 
-  test "score" do
-    assert Day04.score(input()) == 4512
+  test "score_first_winning" do
+    assert Day04.score_first_winning(input()) == 4512
   end
 
-  test "score_real" do
+  test "score_first_winning_real" do
     input = File.read!("test/lib/advent_2021/input/day_04.txt")
-    assert Day04.score(input) == 2745
+    assert Day04.score_first_winning(input) == 2745
+  end
+
+  test "score_last_winning" do
+    assert Day04.score_last_winning(input()) == 1924
+  end
+
+  test "score_last_winning_real" do
+    input = File.read!("test/lib/advent_2021/input/day_04.txt")
+    assert Day04.score_last_winning(input) == 6594
   end
 
   defp input do

@@ -66,7 +66,7 @@ end
 defmodule Advent2021.Day04 do
   alias Advent2021.Day04.Board
 
-  def score(input) do
+  def score_first_winning(input) do
     {drawn_numbers, boards} = parse(input)
 
     {number_triggering_winner, winning_board} =
@@ -78,6 +78,23 @@ defmodule Advent2021.Day04 do
           {:halt, {number, won}}
         else
           {:cont, marked}
+        end
+      end)
+
+    number_triggering_winner * Board.unmarked_number_sum(winning_board)
+  end
+
+  def score_last_winning(input) do
+    {drawn_numbers, boards} = parse(input)
+
+    {number_triggering_winner, winning_board} =
+      Enum.reduce_while(drawn_numbers, boards, fn number, acc ->
+        marked = Enum.map(acc, fn board -> Board.mark(board, number) end)
+
+        if Enum.count(marked) == 1 && Board.won?(List.first(marked)) do
+          {:halt, {number, List.first(marked)}}
+        else
+          {:cont, Enum.reject(marked, &Board.won?/1)}
         end
       end)
 
