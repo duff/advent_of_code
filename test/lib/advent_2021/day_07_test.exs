@@ -12,6 +12,15 @@ defmodule Advent2021.Day07Test do
     assert Day07.minimum_fuel(input) == 328_262
   end
 
+  test " minimum_fuel_incrementing_costs" do
+    assert Day07.minimum_fuel(input(), incrementing: true) == 168
+  end
+
+  test "inimum_fuel_incrementing_costs real" do
+    input = File.read!("test/lib/advent_2021/input/day_07.txt") |> String.trim()
+    assert Day07.minimum_fuel(input, incrementing: true) == 90_040_997
+  end
+
   defp input do
     "16,1,2,0,4,2,7,1,2,14"
   end
