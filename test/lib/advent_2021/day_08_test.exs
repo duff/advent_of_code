@@ -8,7 +8,7 @@ defmodule Advent2021.Day08Test do
   end
 
   test "one_four_seven_eight_count real" do
-    input = File.read!("test/lib/advent_2021/input/day_08.txt")## |> String.trim()
+    input = File.read!("test/lib/advent_2021/input/day_08.txt")
     assert Day08.one_four_seven_eight_count(input) == 367
   end
 

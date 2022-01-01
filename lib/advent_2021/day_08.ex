@@ -9,10 +9,10 @@ defmodule Advent2021.Day08 do
   defp input_to_list(input) do
     input
     |> String.split("\n")
-    |> Enum.map(&String.split/1)
+    |> Enum.map(fn e -> String.split(e, [" ", " | "]) end)
     |> Enum.map(fn list ->
       {signals, output} = Enum.split(list, 10)
-      %{signals: signals, output: List.delete_at(output, 0)}
+      %{signals: signals, output: output}
     end)
   end
 end
