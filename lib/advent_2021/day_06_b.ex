@@ -1,4 +1,4 @@
-defmodule Advent2021.Day06Part2 do
+defmodule Advent2021.Day06B do
   def fish_count(input, days) do
     input
     |> retrieve_school
