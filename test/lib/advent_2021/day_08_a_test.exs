@@ -1,15 +1,15 @@
-defmodule Advent2021.Day08Test do
+defmodule Advent2021.Day08ATest do
   use ExUnit.Case, async: true
 
-  alias Advent2021.Day08
+  alias Advent2021.Day08A
 
   test "one_four_seven_eight_count" do
-    assert Day08.one_four_seven_eight_count(input()) == 26
+    assert Day08A.one_four_seven_eight_count(input()) == 26
   end
 
   test "one_four_seven_eight_count real" do
     input = File.read!("test/lib/advent_2021/input/day_08.txt")
-    assert Day08.one_four_seven_eight_count(input) == 367
+    assert Day08A.one_four_seven_eight_count(input) == 367
   end
 
   defp input do
