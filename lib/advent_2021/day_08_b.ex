@@ -30,56 +30,64 @@ defmodule Advent2021.Day08B do
   end
 
   defp deduce([signal = [_, _] | rest], result) do
-    deduce(rest, Map.put(result, 1, MapSet.new(signal)))
+    remember(1, signal, result, rest)
   end
 
   defp deduce([signal = [_, _, _] | rest], result) do
-    deduce(rest, Map.put(result, 7, MapSet.new(signal)))
+    remember(7, signal, result, rest)
   end
 
   defp deduce([signal = [_, _, _, _] | rest], result) do
-    deduce(rest, Map.put(result, 4, MapSet.new(signal)))
+    remember(4, signal, result, rest)
   end
 
   defp deduce([signal = [_, _, _, _, _, _, _] | rest], result) do
-    deduce(rest, Map.put(result, 8, MapSet.new(signal)))
+    remember(8, signal, result, rest)
   end
 
   defp deduce([signal = [_, _, _, _, _, _] | rest], result = %{9 => _, 6 => _}) do
-    deduce(rest, Map.put(result, 0, MapSet.new(signal)))
+    remember(0, signal, result, rest)
   end
 
   defp deduce([signal = [_, _, _, _, _] | rest], result = %{9 => nine, 8 => eight, 7 => seven}) do
     diff = MapSet.difference(eight, nine)
 
     if MapSet.subset?(diff, MapSet.new(signal)) do
-      deduce(rest, Map.put(result, 2, MapSet.new(signal)))
+      remember(2, signal, result, rest)
     else
       if MapSet.subset?(seven, MapSet.new(signal)) do
-        deduce(rest, Map.put(result, 3, MapSet.new(signal)))
+        remember(3, signal, result, rest)
       else
-        deduce(rest, Map.put(result, 5, MapSet.new(signal)))
+        remember(5, signal, result, rest)
       end
     end
   end
 
   defp deduce([signal = [_, _, _, _, _, _] | rest], result = %{4 => four, 7 => seven}) do
     if MapSet.subset?(four, MapSet.new(signal)) do
-      deduce(rest, Map.put(result, 9, MapSet.new(signal)))
+      remember(9, signal, result, rest)
     else
       if !MapSet.subset?(seven, MapSet.new(signal)) do
-        deduce(rest, Map.put(result, 6, MapSet.new(signal)))
+        remember(6, signal, result, rest)
       else
-        deduce(rest ++ [signal], result)
+        move_to_end(signal, rest, result)
       end
     end
   end
 
   defp deduce([signal | rest], result) do
-    deduce(rest ++ [signal], result)
+    move_to_end(signal, rest, result)
   end
 
   defp deduce([], result) do
     result
+  end
+
+  defp remember(number, signal, result, rest) do
+    deduce(rest, Map.put(result, number, MapSet.new(signal)))
+  end
+
+  defp move_to_end(signal, rest, result) do
+    deduce(rest ++ [signal], result)
   end
 end
