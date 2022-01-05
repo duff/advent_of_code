@@ -24,7 +24,7 @@ defmodule Advent2021.Day09 do
       {x, y}
     end
     |> Enum.map(fn lowpoint -> basin_size(lowpoint, map) end)
-    |> Enum.sort
+    |> Enum.sort()
     |> Enum.take(-3)
     |> Enum.product()
   end
@@ -35,23 +35,20 @@ defmodule Advent2021.Day09 do
   end
 
   defp flow(lava, {x, y}, map) do
-    cond do
-      Map.get(map, {x, y}) == nil ->
-        lava
-
-      Map.get(map, {x, y}) == 9 ->
-        lava
-
-      MapSet.member?(lava, {x, y}) ->
-        lava
-
-      true ->
-        MapSet.put(lava, {x, y})
-        |> flow({x + 1, y}, map)
-        |> flow({x - 1, y}, map)
-        |> flow({x, y + 1}, map)
-        |> flow({x, y - 1}, map)
+    if flow_stopped?({x, y}, map, lava) do
+      lava
+    else
+      lava
+      |> MapSet.put({x, y})
+      |> flow({x + 1, y}, map)
+      |> flow({x - 1, y}, map)
+      |> flow({x, y + 1}, map)
+      |> flow({x, y - 1}, map)
     end
+  end
+
+  defp flow_stopped?(position, map, lava) do
+    MapSet.member?(lava, position) || Map.get(map, position) in [nil, 9]
   end
 
   defp input_to_map(input) do
