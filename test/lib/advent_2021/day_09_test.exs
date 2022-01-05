@@ -12,6 +12,15 @@ defmodule Advent2021.Day09Test do
     assert Day09.risk_level_sum(input) == 491
   end
 
+  test "product_of_largest_basins" do
+    assert Day09.product_of_largest_basins(input()) == 1134
+  end
+
+  test "product_of_largest_basins real" do
+    input = File.read!("test/lib/advent_2021/input/day_09.txt") |> String.trim()
+    assert Day09.product_of_largest_basins(input) == 1_075_536
+  end
+
   defp input do
     """
     2199943210
