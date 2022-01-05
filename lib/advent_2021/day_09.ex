@@ -1,14 +1,9 @@
 defmodule Advent2021.Day09 do
   def risk_level_sum(input) do
-    map = input_to_map(input)
-
-    for {{x, y}, digit} <- map,
-        Map.get(map, {x - 1, y}) > digit,
-        Map.get(map, {x + 1, y}) > digit,
-        Map.get(map, {x, y - 1}) > digit,
-        Map.get(map, {x, y + 1}) > digit do
-      digit
-    end
+    input
+    |> input_to_map()
+    |> lowpoints()
+    |> Enum.map(fn {_, digit} -> digit end)
     |> Enum.map(&(&1 + 1))
     |> Enum.sum()
   end
@@ -16,13 +11,9 @@ defmodule Advent2021.Day09 do
   def product_of_largest_basins(input) do
     map = input_to_map(input)
 
-    for {{x, y}, digit} <- map,
-        Map.get(map, {x - 1, y}) > digit,
-        Map.get(map, {x + 1, y}) > digit,
-        Map.get(map, {x, y - 1}) > digit,
-        Map.get(map, {x, y + 1}) > digit do
-      {x, y}
-    end
+    map
+    |> lowpoints()
+    |> Enum.map(fn {position, _} -> position end)
     |> Enum.map(fn lowpoint -> basin_size(lowpoint, map) end)
     |> Enum.sort()
     |> Enum.take(-3)
@@ -31,7 +22,7 @@ defmodule Advent2021.Day09 do
 
   defp basin_size(lowpoint, map) do
     flow(MapSet.new(), lowpoint, map)
-    |> Enum.count()
+    |> MapSet.size()
   end
 
   defp flow(lava, {x, y}, map) do
@@ -49,6 +40,16 @@ defmodule Advent2021.Day09 do
 
   defp flow_stopped?(position, map, lava) do
     MapSet.member?(lava, position) || Map.get(map, position) in [nil, 9]
+  end
+
+  defp lowpoints(map) do
+    for {{x, y}, digit} <- map,
+        Map.get(map, {x - 1, y}) > digit,
+        Map.get(map, {x + 1, y}) > digit,
+        Map.get(map, {x, y - 1}) > digit,
+        Map.get(map, {x, y + 1}) > digit do
+      {{x, y}, digit}
+    end
   end
 
   defp input_to_map(input) do
