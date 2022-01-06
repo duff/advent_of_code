@@ -3,39 +3,53 @@ defmodule Advent2021.Day10 do
     input
     |> String.split("\n", trim: true)
     |> Enum.map(&line_score/1)
-    |> Enum.sum
+    |> Enum.sum()
+  end
+
+  def middle_completion_score(input) do
+    scores =
+      input
+      |> String.split("\n", trim: true)
+      |> Enum.filter(&(line_score(&1) == 0))
+      |> Enum.map(&completetion_score/1)
+      |> Enum.sort()
+
+    Enum.at(scores, div(length(scores), 2))
   end
 
   def line_score(line) do
-    line_score(String.graphemes(line), [])
+    line
+    |> String.graphemes()
+    |> process([])
+    |> elem(0)
   end
 
-  defp line_score([open_symbol | rest], stack) when open_symbol in ["(", "[", "{", "<"] do
-    line_score(rest, [open_symbol | stack])
+  def completetion_score(line) do
+    line
+    |> String.graphemes()
+    |> process([])
+    |> elem(1)
+    |> Enum.reduce(0, &score/2)
   end
 
-  defp line_score(["]" | rest], ["[" | remaining_stack]) do
-    line_score(rest, remaining_stack)
+  defp score("{", acc), do: acc * 5 + 3
+  defp score("(", acc), do: acc * 5 + 1
+  defp score("[", acc), do: acc * 5 + 2
+  defp score("<", acc), do: acc * 5 + 4
+
+  defp process([open_symbol | rest], stack) when open_symbol in ["(", "[", "{", "<"] do
+    process(rest, [open_symbol | stack])
   end
 
-  defp line_score([")" | rest], ["(" | remaining_stack]) do
-    line_score(rest, remaining_stack)
-  end
+  defp process(["]" | rest], ["[" | remaining_stack]), do: process(rest, remaining_stack)
+  defp process([")" | rest], ["(" | remaining_stack]), do: process(rest, remaining_stack)
+  defp process(["}" | rest], ["{" | remaining_stack]), do: process(rest, remaining_stack)
+  defp process([">" | rest], ["<" | remaining_stack]), do: process(rest, remaining_stack)
 
-  defp line_score(["}" | rest], ["{" | remaining_stack]) do
-    line_score(rest, remaining_stack)
-  end
+  defp process([], stack), do: {0, stack}
 
-  defp line_score([">" | rest], ["<" | remaining_stack]) do
-    line_score(rest, remaining_stack)
-  end
-
-  defp line_score([], _stack) do
-    0
-  end
-
-  defp line_score(["]" | _rest], _stack), do: 57
-  defp line_score([">" | _rest], _stack), do: 25137
-  defp line_score(["}" | _rest], _stack), do: 1197
-  defp line_score([")" | _rest], _stack), do: 3
+  defp process(["]" | _rest], stack), do: {57, stack}
+  defp process([">" | _rest], stack), do: {25137, stack}
+  defp process(["}" | _rest], stack), do: {1197, stack}
+  defp process([")" | _rest], stack), do: {3, stack}
 end
