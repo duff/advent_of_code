@@ -9,6 +9,20 @@ defmodule Advent2021.Day11 do
     |> elem(0)
   end
 
+  def step_of_simultaneous_flash(input) do
+    grid = input_to_grid(input)
+
+    Enum.reduce_while(1..500, {0, grid}, fn step, {_, grid} ->
+      {_, grid} = step(grid)
+
+      if Enum.all?(grid, fn {_, value} -> value in [0, nil] end) do
+        {:halt, step}
+      else
+        {:cont, {0, grid}}
+      end
+    end)
+  end
+
   defp step(grid) do
     after_all_flashing = grid |> inc_all_values() |> find_and_inc_adjacent_flashes()
 

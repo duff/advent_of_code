@@ -11,6 +11,14 @@ defmodule Advent2021.Day11Test do
     assert Day11.flashes(real_input()) == 1723
   end
 
+  test "step_of_simultaneous_flash" do
+    assert Day11.step_of_simultaneous_flash(input()) == 195
+  end
+
+  test "step_of_simultaneous_flash real" do
+    assert Day11.step_of_simultaneous_flash(real_input()) == 327
+  end
+
   defp input do
     """
     5483143223
