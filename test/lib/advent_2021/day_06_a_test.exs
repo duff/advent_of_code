@@ -14,6 +14,7 @@ defmodule Advent2021.Day06ATest do
     assert Day06A.fish_count(input(), 80) == 5934
   end
 
+  @tag :real_data_slow
   test "fish_count real" do
     input = File.read!("test/lib/advent_2021/input/day_06.txt") |> String.trim()
     assert Day06A.fish_count(input, 80) == 373_378

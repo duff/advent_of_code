@@ -28,6 +28,10 @@ defmodule Advent2021.Day12BTest do
     assert Day12B.path_count(input()) == 36
     assert Day12B.path_count(another_input()) == 103
     assert Day12B.path_count(third_input()) == 3509
+  end
+
+  @tag :real_data_slow
+  test "path_count real" do
     assert Day12B.path_count(real_input()) == 130_493
   end
 
