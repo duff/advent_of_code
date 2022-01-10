@@ -1,13 +1,34 @@
-defmodule Advent2021.Day12Test do
+defmodule Advent2021.Day12BTest do
   use ExUnit.Case, async: true
 
-  alias Advent2021.Day12
+  alias Advent2021.Day12B.Visited
+  alias Advent2021.Day12B
+
+  test "visited" do
+    v = Visited.new()
+    assert Visited.remember(v, "UPPER") == v
+
+    v = Visited.remember(v, "uno")
+    assert Visited.done?(v, "uno") == false
+
+    v = Visited.remember(v, "dos")
+    assert Visited.done?(v, "dos") == false
+    assert Visited.done?(v, "uno") == false
+
+    v = Visited.remember(v, "uno")
+    assert Visited.done?(v, "uno") == true
+    assert Visited.done?(v, "dos") == true
+    assert Visited.done?(v, "tres") == false
+
+    v = Visited.remember(v, "tres")
+    assert Visited.done?(v, "tres") == true
+  end
 
   test "path_count" do
-    assert Day12.path_count(input()) == 10
-    assert Day12.path_count(another_input()) == 19
-    assert Day12.path_count(third_input()) == 226
-    assert Day12.path_count(real_input()) == 4707
+    assert Day12B.path_count(input()) == 36
+    assert Day12B.path_count(another_input()) == 103
+    assert Day12B.path_count(third_input()) == 3509
+    assert Day12B.path_count(real_input()) == 130_493
   end
 
   defp input do

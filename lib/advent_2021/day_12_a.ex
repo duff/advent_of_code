@@ -1,4 +1,4 @@
-defmodule Advent2021.Day12 do
+defmodule Advent2021.Day12A do
   def path_count(input) do
     input
     |> to_edges()
