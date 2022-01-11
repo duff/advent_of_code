@@ -12,6 +12,15 @@ defmodule Advent2021.Day13Test do
     assert Day13.dot_count_after_first_fold(input) == 671
   end
 
+  test "dot_count_after_all_folds" do
+    assert Day13.dot_count_after_all_folds(input()) == 16
+  end
+
+  test "dot_count_after_all_folds real" do
+    input = File.read!("test/lib/advent_2021/input/day_13.txt") |> String.trim()
+    assert Day13.dot_count_after_all_folds(input) == 97
+  end
+
   defp input do
     """
     6,10

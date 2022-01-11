@@ -7,6 +7,16 @@ defmodule Advent2021.Day13 do
     |> Enum.count()
   end
 
+  def dot_count_after_all_folds(input) do
+    dots = dots(input)
+    folds = folds(input)
+
+    folds
+    |> Enum.reduce(dots, fn fold, acc -> perform_fold(acc, fold) end)
+    # |> print
+    |> Enum.count()
+  end
+
   defp perform_fold(dots, {"y", coordinate}) do
     {above_fold, below_fold} = Enum.split_with(dots, fn {_x, y} -> y < coordinate end)
 
@@ -65,4 +75,21 @@ defmodule Advent2021.Day13 do
   defp fold(_line, acc) do
     acc
   end
+
+  # defp print(dots) do
+  #   IO.puts("")
+  #   IO.puts("")
+
+  #   for y <- 0..10 do
+  #     IO.puts(
+  #       Enum.map(0..40, fn x ->
+  #         if MapSet.member?(dots, {x, y}) do
+  #           " O "
+  #         else
+  #           "   "
+  #         end
+  #       end)
+  #     )
+  #   end
+  # end
 end
