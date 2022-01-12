@@ -3,11 +3,11 @@ defmodule Advent2021.Day14ATest do
 
   alias Advent2021.Day14A
 
-  test "insert_pairs" do
-    assert Day14A.insert_pairs(input(), 1) == "NCNBCHB"
-    assert Day14A.insert_pairs(input(), 2) == "NBCCNBBBCBHCB"
-    assert Day14A.insert_pairs(input(), 3) == "NBBBCNCCNBBNBNBBCHBHHBCHB"
-    assert Day14A.insert_pairs(input(), 4) == "NBBNBNBBCCNBCNCCNBBNBBNBBBNBBNBBCBHCBHHNHCBBCBHCB"
+  test "go" do
+    assert Day14A.go(input(), 1) == "NCNBCHB"
+    assert Day14A.go(input(), 2) == "NBCCNBBBCBHCB"
+    assert Day14A.go(input(), 3) == "NBBBCNCCNBBNBNBBCHBHHBCHB"
+    assert Day14A.go(input(), 4) == "NBBNBNBBCCNBCNCCNBBNBBNBBBNBBNBBCBHCBHHNHCBBCBHCB"
   end
 
   test "most_common_minus_least_common" do
