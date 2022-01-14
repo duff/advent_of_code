@@ -1,4 +1,4 @@
-defmodule Advent2021.Day15 do
+defmodule Advent2021.Day15A1 do
   def lowest_risk_amount(input) do
     distances =
       input
