@@ -1,4 +1,4 @@
-defmodule Advent2021.Day15B do
+defmodule Advent2021.Day15B1 do
   def lowest_risk_amount(input) do
     grid = grown_weight_grid(input)
 

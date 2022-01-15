@@ -1,16 +1,17 @@
-defmodule Advent2021.Day15BTest do
+defmodule Advent2021.Day15B2Test do
   use ExUnit.Case, async: true
 
-  alias Advent2021.Day15B
+  alias Advent2021.Day15B2
 
+  @tag :real_data_slow
   test "lowest_risk_amount" do
-    assert Day15B.lowest_risk_amount(input()) == 315
+    assert Day15B2.lowest_risk_amount(input()) == 315
   end
 
   @tag :real_data_slow
   test "lowest_risk_amount real" do
     input = File.read!("test/lib/advent_2021/input/day_15.txt") |> String.trim()
-    assert Day15B.lowest_risk_amount(input) == 1350
+    assert Day15B2.lowest_risk_amount(input) == 1350
   end
 
   defp input do
