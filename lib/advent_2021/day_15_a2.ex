@@ -1,10 +1,11 @@
 defmodule Advent2021.Day15A2 do
   def lowest_risk_amount(input) do
     grid = weight_grid(input)
-    graph = to_graph(grid)
     {max_x, max_y} = max_x_max_y(grid)
 
-    Graph.dijkstra(graph, {0, 0}, {max_x, max_y})
+    grid
+    |> to_graph
+    |> Graph.dijkstra({0, 0}, {max_x, max_y})
     |> Enum.drop(1)
     |> Enum.reduce(0, fn each, acc -> acc + grid[each] end)
   end
