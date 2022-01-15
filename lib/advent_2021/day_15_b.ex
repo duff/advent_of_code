@@ -1,34 +1,43 @@
 defmodule Advent2021.Day15B do
   def lowest_risk_amount(input) do
-    grid = weight_grid(input)
+    grid = grown_weight_grid(input)
 
-    {_max_x, max_y} = max_x_max_y(grid)
+    {max_x, max_y} = max_x_max_y(grid)
 
-    expanded_right =
-      Enum.reduce(1..4, grid, fn _step, acc ->
-        Enum.reduce(acc, acc, fn {{x, y}, weight}, result_acc ->
-          result_acc
-          |> Map.put({x, y + max_y + 1}, new_weight(weight + 1))
-        end)
-      end)
-
-    {max_x, _max_y} = max_x_max_y(expanded_right)
-
-    expanded_down =
-      Enum.reduce(1..4, expanded_right, fn _step, acc ->
-        Enum.reduce(acc, acc, fn {{x, y}, weight}, result_acc ->
-          result_acc
-          |> Map.put({x + max_x + 1, y}, new_weight(weight + 1))
-        end)
-      end)
-
-    {max_x, max_y} = max_x_max_y(expanded_down)
-
-    expanded_down
+    grid
     |> to_graph
     |> Graph.dijkstra({0, 0}, {max_x, max_y})
     |> Enum.drop(1)
-    |> Enum.reduce(0, fn each, acc -> acc + expanded_down[each] end)
+    |> Enum.reduce(0, fn each, acc -> acc + grid[each] end)
+  end
+
+  defp grown_weight_grid(input) do
+    input
+    |> weight_grid
+    |> grow_right
+    |> grow_down
+  end
+
+  defp grow_right(grid) do
+    {_max_x, max_y} = max_x_max_y(grid)
+
+    Enum.reduce(1..4, grid, fn _step, acc ->
+      Enum.reduce(acc, acc, fn {{x, y}, weight}, result_acc ->
+        result_acc
+        |> Map.put({x, y + max_y + 1}, new_weight(weight + 1))
+      end)
+    end)
+  end
+
+  defp grow_down(grid) do
+    {max_x, _max_y} = max_x_max_y(grid)
+
+    Enum.reduce(1..4, grid, fn _step, acc ->
+      Enum.reduce(acc, acc, fn {{x, y}, weight}, result_acc ->
+        result_acc
+        |> Map.put({x + max_x + 1, y}, new_weight(weight + 1))
+      end)
+    end)
   end
 
   defp new_weight(10), do: 1
