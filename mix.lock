@@ -1,4 +1,4 @@
 %{
-  "libgraph": {:hex, :libgraph, "0.13.3", "20732b7bafb933dcf7351c479e03076ebd14a85fd3202c67a1c197f4f7c2466b", [:mix], [], "hexpm", "78f2576eef615440b46f10060b1de1c86640441422832052686df53dc3c148c6"},
+  "libgraph": {:git, "https://github.com/bitwalker/libgraph", "180d7177cd8f19e62739bc8eb27f1174e63db74d", [branch: "main"]},
   "nx": {:git, "https://github.com/elixir-nx/nx.git", "b6a35bb7f320099beb5d43513afa119571b1c307", [branch: "main", sparse: "nx"]},
 }
