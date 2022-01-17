@@ -48,7 +48,7 @@ defmodule Advent2021.Day15B2 do
     updated_distances = update_adjacent_distances(nodes_to_assess, distances)
 
     updated_distances
-    |> print(false)
+    # |> print(false)
     |> Map.filter(fn {node, _distance} -> !MapSet.member?(visited, node) end)
     |> assess_available_and_go(weight_grid, updated_distances, visited)
   end
@@ -96,32 +96,32 @@ defmodule Advent2021.Day15B2 do
     end
   end
 
-  defp print(grid, show_values \\ true) do
-    {max_x, max_y} = max_x_max_y(grid)
+  # defp print(grid, show_values \\ true) do
+  #   {max_x, max_y} = max_x_max_y(grid)
 
-    IO.puts("")
+  #   IO.puts("")
 
-    for x <- 0..max_x do
-      for y <- 0..max_y do
-        value = Map.get(grid, {x, y})
+  #   for x <- 0..max_x do
+  #     for y <- 0..max_y do
+  #       value = Map.get(grid, {x, y})
 
-        if is_nil(value) do
-          IO.write(String.pad_leading(" ", 1))
-        else
-          if show_values do
-            IO.write(String.pad_leading(Integer.to_string(value), 3))
-          else
-            IO.write(String.pad_leading("*", 1))
-          end
-        end
-      end
+  #       if is_nil(value) do
+  #         IO.write(String.pad_leading(" ", 1))
+  #       else
+  #         if show_values do
+  #           IO.write(String.pad_leading(Integer.to_string(value), 3))
+  #         else
+  #           IO.write(String.pad_leading("*", 1))
+  #         end
+  #       end
+  #     end
 
-      IO.write("\n")
-    end
+  #     IO.write("\n")
+  #   end
 
-    IO.puts("")
-    grid
-  end
+  #   IO.puts("")
+  #   grid
+  # end
 
   defp max_x_max_y(grid) do
     {{max_x, _}, _} = Enum.max_by(grid, fn {{x, _}, _} -> x end)
