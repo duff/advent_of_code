@@ -1,9 +1,9 @@
-defprotocol Advent2021.Day16.Packet.VersionTotal do
+defprotocol Advent2021.Day16A.Packet.VersionTotal do
   def versions(packet)
 end
 
-defmodule Advent2021.Day16.Packet.LiteralValue do
-  alias Advent2021.Day16.Packet.{LiteralValue, VersionTotal}
+defmodule Advent2021.Day16A.Packet.LiteralValue do
+  alias Advent2021.Day16A.Packet.{LiteralValue, VersionTotal}
 
   defstruct ~w(version amount bitcount)a
 
@@ -16,8 +16,8 @@ defmodule Advent2021.Day16.Packet.LiteralValue do
   end
 end
 
-defmodule Advent2021.Day16.Packet.Operator do
-  alias Advent2021.Day16.Packet.{Operator, VersionTotal}
+defmodule Advent2021.Day16A.Packet.Operator do
+  alias Advent2021.Day16A.Packet.{Operator, VersionTotal}
 
   defstruct ~w(version subpackets)a
 
@@ -35,8 +35,8 @@ defmodule Advent2021.Day16.Packet.Operator do
   end
 end
 
-defmodule Advent2021.Day16 do
-  alias Advent2021.Day16.Packet.{LiteralValue, Operator, VersionTotal}
+defmodule Advent2021.Day16A do
+  alias Advent2021.Day16A.Packet.{LiteralValue, Operator, VersionTotal}
 
   def sum_version_numbers(input) do
     input
