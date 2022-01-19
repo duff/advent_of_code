@@ -40,16 +40,16 @@ defmodule Advent2021.Day16B.Packet.Operator do
     def value(%Operator{type_id_bits: type_id_bits, subpackets: subpackets}) do
       subpackets
       |> Enum.map(&Packet.value/1)
-      |> perform(type_id_bits)
+      |> perform(Integer.undigits(type_id_bits, 2))
     end
 
-    defp perform(values, [0, 0, 0]), do: Enum.sum(values)
-    defp perform(values, [0, 0, 1]), do: Enum.product(values)
-    defp perform(values, [0, 1, 0]), do: Enum.min(values)
-    defp perform(values, [0, 1, 1]), do: Enum.max(values)
-    defp perform([first, second], [1, 1, 0]) when first > second, do: 1
-    defp perform([first, second], [1, 0, 1]) when first < second, do: 1
-    defp perform([same, same], [1, 1, 1]), do: 1
+    defp perform(values, 0), do: Enum.sum(values)
+    defp perform(values, 1), do: Enum.product(values)
+    defp perform(values, 2), do: Enum.min(values)
+    defp perform(values, 3), do: Enum.max(values)
+    defp perform([first, second], 5) when first < second, do: 1
+    defp perform([first, second], 6) when first > second, do: 1
+    defp perform([same, same], 7), do: 1
     defp perform([_, _], _type_id_bits), do: 0
   end
 end
@@ -70,11 +70,8 @@ defmodule Advent2021.Day16B do
     input
     |> binary_digits
     |> packets
-    |> first_packet_value
-  end
-
-  defp first_packet_value([first_packet | _]) do
-    Packet.value(first_packet)
+    |> hd
+    |> Packet.value()
   end
 
   defp binary_digits(input) do
