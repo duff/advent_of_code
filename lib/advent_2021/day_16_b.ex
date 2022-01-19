@@ -5,12 +5,12 @@ end
 
 defmodule Advent2021.Day16B.Packet.LiteralValue do
   alias Advent2021.Day16B.Packet
-  alias Advent2021.Day16B.Packet.{LiteralValue}
+  alias Advent2021.Day16B.Packet.LiteralValue
 
-  defstruct ~w(version amount bitcount)a
+  defstruct ~w(version amount)a
 
   def new(version, value_bits) do
-    %LiteralValue{version: version, amount: Integer.undigits(value_bits, 2), bitcount: length(value_bits) + 6}
+    %LiteralValue{version: version, amount: Integer.undigits(value_bits, 2)}
   end
 
   defimpl Packet do
@@ -21,7 +21,7 @@ end
 
 defmodule Advent2021.Day16B.Packet.Operator do
   alias Advent2021.Day16B.Packet
-  alias Advent2021.Day16B.Packet.{Operator}
+  alias Advent2021.Day16B.Packet.Operator
 
   defstruct ~w(version subpackets type_id_bits)a
 
@@ -37,64 +37,20 @@ defmodule Advent2021.Day16B.Packet.Operator do
       |> List.flatten()
     end
 
-    def value(%Operator{type_id_bits: [0, 0, 0]} = packet) do
-      packet
-      |> values
-      |> Enum.sum()
-    end
-
-    def value(%Operator{type_id_bits: [0, 0, 1]} = packet) do
-      packet
-      |> values
-      |> Enum.product()
-    end
-
-    def value(%Operator{type_id_bits: [0, 1, 0]} = packet) do
-      packet
-      |> values
-      |> Enum.min()
-    end
-
-    def value(%Operator{type_id_bits: [0, 1, 1]} = packet) do
-      packet
-      |> values
-      |> Enum.max()
-    end
-
-    def value(%Operator{type_id_bits: [1, 1, 0]} = packet) do
-      [first, second] = values(packet)
-
-      if first > second do
-        1
-      else
-        0
-      end
-    end
-
-    def value(%Operator{type_id_bits: [1, 0, 1]} = packet) do
-      [first, second] = values(packet)
-
-      if first < second do
-        1
-      else
-        0
-      end
-    end
-
-    def value(%Operator{type_id_bits: [1, 1, 1]} = packet) do
-      [first, second] = values(packet)
-
-      if first == second do
-        1
-      else
-        0
-      end
-    end
-
-    defp values(%Operator{subpackets: subpackets}) do
+    def value(%Operator{type_id_bits: type_id_bits, subpackets: subpackets}) do
       subpackets
       |> Enum.map(&Packet.value/1)
+      |> perform(type_id_bits)
     end
+
+    defp perform(values, [0, 0, 0]), do: Enum.sum(values)
+    defp perform(values, [0, 0, 1]), do: Enum.product(values)
+    defp perform(values, [0, 1, 0]), do: Enum.min(values)
+    defp perform(values, [0, 1, 1]), do: Enum.max(values)
+    defp perform([first, second], [1, 1, 0]) when first > second, do: 1
+    defp perform([first, second], [1, 0, 1]) when first < second, do: 1
+    defp perform([same, same], [1, 1, 1]), do: 1
+    defp perform([_, _], _type_id_bits), do: 0
   end
 end
 
