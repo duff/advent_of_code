@@ -30,7 +30,7 @@ defmodule Advent2021.Day16A.Packet.Operator do
       subpackets
       |> Enum.map(&VersionTotal.versions/1)
       |> Enum.concat([version])
-      |> List.flatten
+      |> List.flatten()
     end
   end
 end
@@ -43,7 +43,7 @@ defmodule Advent2021.Day16A do
     |> binary_digits
     |> packets
     |> Enum.flat_map(&VersionTotal.versions/1)
-    |> Enum.sum
+    |> Enum.sum()
   end
 
   defp binary_digits(input) do
@@ -79,8 +79,6 @@ defmodule Advent2021.Day16A do
     # number_of_subpackets = Integer.undigits(number_of_subpackets_bits, 2)
 
     rest_of_packets = packets(remainder)
-    # {actual_subpackets, re_parsable_packets} = Enum.split(rest_of_packets, number_of_subpackets)
-
     {rest_of_packets, []}
   end
 
@@ -102,8 +100,6 @@ defmodule Advent2021.Day16A do
       [[two, three, four, five] | literal_value_result]
       |> Enum.reverse()
       |> List.flatten()
-
-    # |> Integer.undigits(2)
 
     {bits, rest}
   end
