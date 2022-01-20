@@ -59,6 +59,14 @@ defmodule Advent2021.Day17Test do
     assert Day17.highest_y("target area: x=138..184, y=-125..-71") == 7750
   end
 
+  test "velocity_count" do
+    assert Day17.velocity_count(input()) == 112
+  end
+
+  test "velocity_count real" do
+    assert Day17.velocity_count("target area: x=138..184, y=-125..-71") == 4120
+  end
+
   defp input do
     "target area: x=20..30, y=-10..-5"
   end

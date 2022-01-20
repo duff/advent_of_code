@@ -62,4 +62,15 @@ defmodule Advent2021.Day17 do
     end
     |> Enum.max()
   end
+
+  def velocity_count(input) do
+    p = Probe.new(input)
+
+    for velocity_x <- 0..200,
+        velocity_y <- -200..200,
+        p = Probe.launch(p, velocity_x, velocity_y) do
+      p
+    end
+    |> Enum.count()
+  end
 end
