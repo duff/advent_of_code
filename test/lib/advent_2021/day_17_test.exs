@@ -55,14 +55,17 @@ defmodule Advent2021.Day17Test do
     assert Day17.highest_y(input()) == 45
   end
 
+  @tag :real_data_slow
   test "highest_y real" do
     assert Day17.highest_y("target area: x=138..184, y=-125..-71") == 7750
   end
 
+  @tag :real_data_slow
   test "velocity_count" do
     assert Day17.velocity_count(input()) == 112
   end
 
+  @tag :real_data_slow
   test "velocity_count real" do
     assert Day17.velocity_count("target area: x=138..184, y=-125..-71") == 4120
   end

@@ -35,6 +35,7 @@ defmodule Advent2018.Day10Test do
     assert Rectangle.area(rect) == 48
   end
 
+  @tag :real_data_slow
   test "smallest_sky" do
     positions = Day10.to_positions(example_input())
     assert {_positions, 99, _seconds} = Day10.smallest_sky(positions)

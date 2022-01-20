@@ -11,6 +11,7 @@ defmodule Advent2021.Day15A2Test do
     assert Day15A2.lowest_risk_amount(input()) == 40
   end
 
+  @tag :real_data_slow
   test "lowest_risk_amount real" do
     input = File.read!("test/lib/advent_2021/input/day_15.txt") |> String.trim()
     assert Day15A2.lowest_risk_amount(input) == 503
