@@ -1,4 +1,4 @@
-defmodule Advent2021.Day18Test do
+defmodule Advent2021.Day18Try1Test do
   use ExUnit.Case, async: true
 
   test "simplest parse" do
