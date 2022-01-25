@@ -1,4 +1,4 @@
-defmodule Advent2021.Day18 do
+defmodule Advent2021.Day18.Try2 do
   def parse(input) do
     input
     |> Code.string_to_quoted!()
@@ -34,33 +34,14 @@ defmodule Advent2021.Day18 do
   end
 
   def magnitude({[left, right], _}) when is_integer(right) do
-    (magnitude(left) * 3) + right * 2
+    magnitude(left) * 3 + right * 2
   end
 
   def magnitude({[left, right], _}) when is_integer(right) do
-    left * 3 + (magnitude(right) * 2)
+    left * 3 + magnitude(right) * 2
   end
 
   def magnitude({[left, right], _}) do
-    (magnitude(left) * 3) + (magnitude(right) * 2)
+    magnitude(left) * 3 + magnitude(right) * 2
   end
-
-  # def split(snum) do
-  #   index_needing_split = Enum.find_index(snum, fn {num, _depth} -> num > 9 end)
-
-  #   if index_needing_split do
-  #     {true, split_at(snum, index_needing_split)}
-  #   else
-  #     {false, snum}
-  #   end
-  # end
-
-  # defp split_at(snum, index) do
-  #   snum
-  #   |> List.update_at(index, fn {num, depth} ->
-  #     result = num / 2
-  #     [{floor(result), depth + 1}, {ceil(result), depth + 1}]
-  #   end)
-  #   |> List.flatten()
-  # end
 end
