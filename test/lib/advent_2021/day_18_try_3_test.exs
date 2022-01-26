@@ -56,6 +56,49 @@ defmodule Advent2021.Day18.Try3Test do
   end
 
   test "explode not needed" do
-    assert Try3.explode({{{{0,7},4},{{7,8},{6,0}}},{8,1}}) == {false, {{{{0,7},4},{{7,8},{6,0}}},{8,1}}}
+    assert Try3.explode({{{{0, 7}, 4}, {{7, 8}, {6, 0}}}, {8, 1}}) == {false, {{{{0, 7}, 4}, {{7, 8}, {6, 0}}}, {8, 1}}}
+  end
+
+  test "explode_and_split reduction" do
+    added = Try3.add({{{{4, 3}, 4}, 4}, {7, {{8, 4}, 9}}}, {1, 1})
+    reduced = Try3.explode_split(added)
+    assert reduced == {{{{0, 7}, 4}, {{7, 8}, {6, 0}}}, {8, 1}}
+  end
+
+  test "add and reduce" do
+    assert Try3.add_and_reduce(simple_input()) == {{{{4,0},{5,4}},{{7,7},{6,0}}},{{8,{7,7}},{{7,9},{5,0}}}}
+  end
+
+  @tag :real_data_slow
+  test "part one" do
+    assert Try3.part_one(input()) == 4140
+  end
+
+  @tag :real_data_slow
+  test "part_one real" do
+    input = File.read!("test/lib/advent_2021/input/day_18.txt") |> String.trim()
+    assert Try3.part_one(input) == 2907
+  end
+
+  defp simple_input do
+    """
+    [[[0,[4,5]],[0,0]],[[[4,5],[2,6]],[9,5]]]
+    [7,[[[3,7],[4,3]],[[6,3],[8,8]]]]
+    """
+  end
+
+  defp input do
+    """
+    [[[0,[5,8]],[[1,7],[9,6]]],[[4,[1,2]],[[1,4],2]]]
+    [[[5,[2,8]],4],[5,[[9,9],0]]]
+    [6,[[[6,2],[5,6]],[[7,6],[4,7]]]]
+    [[[6,[0,7]],[0,9]],[4,[9,[9,0]]]]
+    [[[7,[6,4]],[3,[1,3]]],[[[5,5],1],9]]
+    [[6,[[7,3],[3,2]]],[[[3,8],[5,7]],4]]
+    [[[[5,4],[7,7]],8],[[8,3],8]]
+    [[9,3],[[9,9],[6,[4,9]]]]
+    [[2,[[7,7],7]],[[5,8],[[9,3],[0,2]]]]
+    [[[[5,2],5],[8,[3,7]]],[[5,[7,5]],[4,4]]]
+    """
   end
 end

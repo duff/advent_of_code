@@ -1,9 +1,42 @@
 defmodule Advent2021.Day18.Try3 do
+  def part_one(input) do
+    input
+    |> add_and_reduce
+    |> magnitude
+  end
+
+  def add_and_reduce(input) do
+    input
+    |> String.split()
+    |> Enum.map(&parse/1)
+    |> Enum.reduce(fn each, acc ->
+      acc
+      |> add(each)
+      |> explode_split()
+    end)
+  end
+
   def parse(input) do
     input
     |> String.replace("[", "{")
     |> String.replace("]", "}")
     |> Code.string_to_quoted!()
+  end
+
+  def explode_split(ast) do
+    case explode(ast) do
+      {true, exploded} ->
+        explode_split(exploded)
+
+      {false, not_exploded} ->
+        case split(not_exploded) do
+          {true, split} ->
+            explode_split(split)
+
+          {false, not_split} ->
+            not_split
+        end
+    end
   end
 
   def add(one, two) do
@@ -97,7 +130,7 @@ defmodule Advent2021.Day18.Try3 do
   defp find_explosive([], _index, _depth), do: false
 
   defp replace_exploding_pair_with_zero(list, index_left, index_right) do
-    Enum.slice(list, 0..(index_left - 2)) ++ Enum.slice(list, (index_right + 2)..length(list))
+    (Enum.slice(list, 0..(index_left - 2)) ++ Enum.slice(list, (index_right + 2)..length(list)))
     |> List.insert_at(index_left - 1, 0)
   end
 
@@ -106,11 +139,23 @@ defmodule Advent2021.Day18.Try3 do
     |> Macro.to_string()
     |> String.replace(" ", "")
     |> String.graphemes()
-    |> Enum.map(fn e ->
-      case Integer.parse(e) do
-        :error -> e
-        {number, _rem} -> number
-      end
-    end)
+    |> Enum.map(&str_or_int/1)
+    |> combine_adjacent_numbers()
+  end
+
+  defp combine_adjacent_numbers(list), do: combine_adjacent_numbers(list, [])
+  defp combine_adjacent_numbers([], result), do: result |> Enum.reverse()
+
+  defp combine_adjacent_numbers([element | rest], [last | rest_result]) when is_integer(element) and is_integer(last) do
+    combine_adjacent_numbers(rest, [Integer.undigits([last, element]) | rest_result])
+  end
+
+  defp combine_adjacent_numbers([element | rest], result), do: combine_adjacent_numbers(rest, [element | result])
+
+  defp str_or_int(val) do
+    case Integer.parse(val) do
+      :error -> val
+      {number, _rem} -> number
+    end
   end
 end
