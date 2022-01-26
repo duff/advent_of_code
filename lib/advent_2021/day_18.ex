@@ -1,4 +1,4 @@
-defmodule Advent2021.Day18.Try3 do
+defmodule Advent2021.Day18 do
   def part_one(input) do
     input
     |> add_and_reduce
