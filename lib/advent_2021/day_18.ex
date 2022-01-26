@@ -5,6 +5,20 @@ defmodule Advent2021.Day18 do
     |> magnitude
   end
 
+  def part_two(input) do
+    input
+    |> String.split()
+    |> Enum.map(&parse/1)
+    |> permutations
+    |> Enum.map(fn {left, right} ->
+      left
+      |> add(right)
+      |> explode_split()
+      |> magnitude
+    end)
+    |> Enum.max
+  end
+
   def add_and_reduce(input) do
     input
     |> String.split()
@@ -81,6 +95,16 @@ defmodule Advent2021.Day18 do
       {true, actually_explode(list, index_left)}
     else
       {false, ast}
+    end
+  end
+
+  defp permutations(lines) do
+    max = length(lines)
+
+    for x <- 0..(max - 1),
+        y <- 0..(max - 1),
+        y != x do
+      {Enum.at(lines, x), Enum.at(lines, y)}
     end
   end
 

@@ -66,7 +66,7 @@ defmodule Advent2021.Day18Test do
   end
 
   test "add and reduce" do
-    assert Day18.add_and_reduce(simple_input()) == {{{{4,0},{5,4}},{{7,7},{6,0}}},{{8,{7,7}},{{7,9},{5,0}}}}
+    assert Day18.add_and_reduce(simple_input()) == {{{{4, 0}, {5, 4}}, {{7, 7}, {6, 0}}}, {{8, {7, 7}}, {{7, 9}, {5, 0}}}}
   end
 
   @tag :real_data_slow
@@ -78,6 +78,17 @@ defmodule Advent2021.Day18Test do
   test "part_one real" do
     input = File.read!("test/lib/advent_2021/input/day_18.txt") |> String.trim()
     assert Day18.part_one(input) == 2907
+  end
+
+  test "part two" do
+    assert Day18.part_two(input()) == 3993
+
+  end
+
+  @tag :real_data_slow
+  test "part_two real" do
+    input = File.read!("test/lib/advent_2021/input/day_18.txt") |> String.trim()
+    assert Day18.part_two(input) == 4690
   end
 
   defp simple_input do
