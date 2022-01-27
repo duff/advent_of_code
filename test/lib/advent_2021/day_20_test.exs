@@ -3,13 +3,24 @@ defmodule Advent2021.Day20Test do
 
   alias Advent2021.Day20
 
-  test "pixel_count" do
-    assert Day20.pixel_count(input()) == 35
+  test "part_one" do
+    assert Day20.part_one(input()) == 35
   end
 
-  test "pixel_count real" do
+  test "part_one real" do
     input = File.read!("test/lib/advent_2021/input/day_20.txt") |> String.trim()
-    assert Day20.pixel_count(input) == 5461
+    assert Day20.part_one(input) == 5461
+  end
+
+  @tag :real_data_slow
+  test "part_two" do
+    assert Day20.part_two(input()) == 3351
+  end
+
+  @tag :real_data_slow
+  test "part_two real" do
+    input = File.read!("test/lib/advent_2021/input/day_20.txt") |> String.trim()
+    assert Day20.part_two(input) == 18226
   end
 
 

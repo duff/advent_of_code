@@ -80,9 +80,9 @@ defmodule Advent2021.Day18Test do
     assert Day18.part_one(input) == 2907
   end
 
+  @tag :real_data_slow
   test "part two" do
     assert Day18.part_two(input()) == 3993
-
   end
 
   @tag :real_data_slow

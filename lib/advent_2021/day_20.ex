@@ -1,15 +1,20 @@
 defmodule Advent2021.Day20 do
-  def pixel_count(input) do
+  def part_one(input) do
+    pixel_count(input, 2)
+  end
+
+  def part_two(input) do
+    pixel_count(input, 50)
+  end
+
+  def pixel_count(input, runs) do
     {algorithm, image} = parse(input)
     original_bounds = bounds(image)
+    padded_image = add_padding(image, runs)
 
-    image
-    |> add_padding
-    |> enhance(algorithm)
-    |> enhance(algorithm)
-    |> Enum.count(fn {xy, pixel} ->
-      pixel == 1 && in_expanded_bounds(xy, original_bounds)
-    end)
+    1..runs
+    |> Enum.reduce(padded_image, fn _, acc -> enhance(acc, algorithm) end)
+    |> Enum.count(fn {xy, pixel} -> lit_pixel(pixel, xy, original_bounds, runs) end)
   end
 
   defp enhance(image, algorithm) do
@@ -29,9 +34,13 @@ defmodule Advent2021.Day20 do
     |> Integer.undigits(2)
   end
 
-  defp in_expanded_bounds({x, y}, bounds) do
+  defp lit_pixel(pixel, xy, bounds, runs) do
+    pixel == 1 && in_expanded_bounds(xy, bounds, runs)
+  end
+
+  defp in_expanded_bounds({x, y}, bounds, runs) do
     {min_x, max_x, min_y, max_y} = bounds
-    border = 2
+    border = runs
 
     x >= min_x - border && x <= max_x + border && y >= min_y - border && y <= max_y + border
   end
@@ -72,9 +81,9 @@ defmodule Advent2021.Day20 do
     end
   end
 
-  defp add_padding(image) do
+  defp add_padding(image, runs) do
     {min_x, max_x, min_y, max_y} = bounds(image)
-    border = 10
+    border = 2 * runs
 
     coords =
       for x <- (min_x - border)..(max_x + border),
