@@ -7,10 +7,10 @@ defmodule Advent2021.Day20Test do
     assert Day20.pixel_count(input()) == 35
   end
 
-  # test "pixel_count real" do
-  #   input = File.read!("test/lib/advent_2021/input/day_20.txt") |> String.trim()
-  #   assert Day20.pixel_count(input) == :unknown
-  # end
+  test "pixel_count real" do
+    input = File.read!("test/lib/advent_2021/input/day_20.txt") |> String.trim()
+    assert Day20.pixel_count(input) == 5461
+  end
 
 
   defp input do
