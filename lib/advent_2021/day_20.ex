@@ -8,12 +8,10 @@ defmodule Advent2021.Day20 do
   end
 
   def pixel_count(input, runs) do
-    {algorithm, image} = parse(input)
-    original_bounds = bounds(image)
-    padded_image = add_padding(image, runs)
+    {algorithm, image, original_bounds} = parse(input, runs)
 
     1..runs
-    |> Enum.reduce(padded_image, fn _, acc -> enhance(acc, algorithm) end)
+    |> Enum.reduce(image, fn _, acc -> enhance(acc, algorithm) end)
     |> Enum.count(fn {xy, pixel} -> lit_pixel(pixel, xy, original_bounds, runs) end)
   end
 
@@ -59,9 +57,12 @@ defmodule Advent2021.Day20 do
     ]
   end
 
-  defp parse(input) do
+  defp parse(input, runs) do
     [first_line | rest] = String.split(input)
-    {map_algorithm(first_line), map_image(rest)}
+    image = map_image(rest)
+    original_bounds = bounds(image)
+
+    {map_algorithm(first_line), add_padding(image, runs), original_bounds}
   end
 
   defp map_algorithm(str) do
