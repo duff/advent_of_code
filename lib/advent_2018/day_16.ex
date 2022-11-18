@@ -3,7 +3,7 @@ defmodule Advent2018.Day16.Sample do
 end
 
 defmodule Advent2018.Day16 do
-  use Bitwise
+  import Bitwise
 
   alias Advent2018.Day16.Sample
 
