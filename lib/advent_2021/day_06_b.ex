@@ -16,7 +16,7 @@ defmodule Advent2021.Day06B do
     0..8
     |> Map.new(fn x -> {x, 0} end)
     |> Map.merge(initial_school(input))
-    |> Map.values
+    |> Map.values()
   end
 
   defp initial_school(input) do

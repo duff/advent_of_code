@@ -16,7 +16,7 @@ defmodule Advent2021.Day18 do
       |> explode_split()
       |> magnitude
     end)
-    |> Enum.max
+    |> Enum.max()
   end
 
   def add_and_reduce(input) do

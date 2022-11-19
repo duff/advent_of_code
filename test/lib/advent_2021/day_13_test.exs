@@ -46,5 +46,4 @@ defmodule Advent2021.Day13Test do
     fold along x=5
     """
   end
-
 end
