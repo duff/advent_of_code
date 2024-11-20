@@ -22,7 +22,7 @@ defmodule Advent2018.Day14Test do
     assert Day14.part_a([3, 7], 554_401) == "3610281143"
   end
 
-  @tag :real_data_slow
+  @tag :real_data_really_slow
   test "part_b real" do
     assert Day14.part_b([3, 7], "554401") == 20_211_326
   end
