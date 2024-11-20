@@ -13,30 +13,30 @@ defmodule Advent2021.Day08BTest do
 
     assert Day08B.deduce("gcafb gcf dcaebfg ecagb gf abcdeg gaef cafbge fdbac fegbdc") ==
              %{
-               2 => MapSet.new('fdbac'),
-               6 => MapSet.new('abcdeg'),
-               0 => MapSet.new('fegbdc'),
-               3 => MapSet.new('gcafb'),
-               9 => MapSet.new('cafbge'),
-               5 => MapSet.new('ecagb'),
-               8 => MapSet.new('dcaebfg'),
-               4 => MapSet.new('gaef'),
-               7 => MapSet.new('gcf'),
-               1 => MapSet.new('gf')
+               2 => MapSet.new(~c[fdbac]),
+               6 => MapSet.new(~c[abcdeg]),
+               0 => MapSet.new(~c[fegbdc]),
+               3 => MapSet.new(~c[gcafb]),
+               9 => MapSet.new(~c[cafbge]),
+               5 => MapSet.new(~c[ecagb]),
+               8 => MapSet.new(~c[dcaebfg]),
+               4 => MapSet.new(~c[gaef]),
+               7 => MapSet.new(~c[gcf]),
+               1 => MapSet.new(~c[gf])
              }
 
     assert Day08B.deduce("begfcd fabg aecgbdf cefagb edgcba eacbf efgbc bca ab decfa") ==
              %{
-               3 => MapSet.new('eacbf'),
-               6 => MapSet.new('begfcd'),
-               9 => MapSet.new('cefagb'),
-               2 => MapSet.new('decfa'),
-               5 => MapSet.new('efgbc'),
-               8 => MapSet.new('aecgbdf'),
-               0 => MapSet.new('edgcba'),
-               4 => MapSet.new('fabg'),
-               7 => MapSet.new('bca'),
-               1 => MapSet.new('ab')
+               3 => MapSet.new(~c[eacbf]),
+               6 => MapSet.new(~c[begfcd]),
+               9 => MapSet.new(~c[cefagb]),
+               2 => MapSet.new(~c[decfa]),
+               5 => MapSet.new(~c[efgbc]),
+               8 => MapSet.new(~c[aecgbdf]),
+               0 => MapSet.new(~c[edgcba]),
+               4 => MapSet.new(~c[fabg]),
+               7 => MapSet.new(~c[bca]),
+               1 => MapSet.new(~c[ab])
              }
   end
 
@@ -55,16 +55,16 @@ defmodule Advent2021.Day08BTest do
 
   defp expected_deduction do
     %{
-      8 => MapSet.new('acedgfb'),
-      5 => MapSet.new('cdfbe'),
-      2 => MapSet.new('gcdfa'),
-      3 => MapSet.new('fbcad'),
-      7 => MapSet.new('dab'),
-      9 => MapSet.new('cefabd'),
-      6 => MapSet.new('cdfgeb'),
-      4 => MapSet.new('eafb'),
-      0 => MapSet.new('cagedb'),
-      1 => MapSet.new('ab')
+      8 => MapSet.new(~c[acedgfb]),
+      5 => MapSet.new(~c[cdfbe]),
+      2 => MapSet.new(~c[gcdfa]),
+      3 => MapSet.new(~c[fbcad]),
+      7 => MapSet.new(~c[dab]),
+      9 => MapSet.new(~c[cefabd]),
+      6 => MapSet.new(~c[cdfgeb]),
+      4 => MapSet.new(~c[eafb]),
+      0 => MapSet.new(~c[cagedb]),
+      1 => MapSet.new(~c[ab])
     }
   end
 

@@ -12,11 +12,11 @@ defmodule Advent2018.Day05Test do
   end
 
   test "num_units" do
-    assert Day05.num_units('dabAcCaCBAcCcaDA') == 10
-    assert Day05.num_units('aA') == 0
-    assert Day05.num_units('abBA') == 0
-    assert Day05.num_units('abAB') == 4
-    assert Day05.num_units('aabAAB') == 6
+    assert Day05.num_units(~c[dabAcCaCBAcCcaDA]) == 10
+    assert Day05.num_units(~c[aA]) == 0
+    assert Day05.num_units(~c[abBA]) == 0
+    assert Day05.num_units(~c[abAB]) == 4
+    assert Day05.num_units(~c[aabAAB]) == 6
   end
 
   test "shortest_length" do
